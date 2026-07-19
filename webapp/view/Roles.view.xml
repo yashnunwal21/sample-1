@@ -1,0 +1,14 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Roles"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="RolesPage" title="Role Management" showNavButton="false" class="sapUiContentPadding">
+        <MessageStrip
+            text="Role Management module is under construction. This view is wired into routing and ready for development."
+            type="Information"
+            showIcon="true"
+            class="sapUiMediumMarginBottom"/>
+    </Page>
+
+</mvc:View>

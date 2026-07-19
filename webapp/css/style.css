@@ -1,0 +1,78 @@
+﻿/* Enter your custom styles here */
+
+.grcNotificationTitle {
+    font-weight: bold;
+}
+
+.grcStatusRow {
+    width: 100%;
+}
+
+.grcStatusLabel {
+    min-width: 9rem;
+}
+
+.grcFieldHelp {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-size: 0.75rem;
+}
+
+.grcCharCounter {
+    color: var(--sapContent_LabelColor, #6a6d70);
+    font-size: 0.75rem;
+    text-align: right;
+}
+
+.grcEnablerRow {
+    border-bottom: 1px solid var(--sapList_BorderColor, #e5e5e5);
+    padding-bottom: 0.5rem;
+}
+
+.grcRequestCreate {
+    max-width: 72rem;
+}
+
+.grcDynamicFieldList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    column-gap: 1rem;
+}
+
+.grcDynamicField {
+    min-width: 0;
+    padding-bottom: 1rem;
+}
+
+.grcRoleDashboard {
+    max-width: 90rem;
+}
+
+.grcLoginPage {
+    background: var(--sapBackgroundColor, #f5f6f7);
+}
+
+.grcLoginCard {
+    padding: 2rem;
+    background: var(--sapObjectHeader_Background, #fff);
+    border-radius: 0.5rem;
+    box-shadow: var(--sapContent_Shadow2, 0 0.125rem 0.5rem rgba(0, 0, 0, 0.15));
+}
+
+.grcDashboardHeader {
+    gap: 1rem;
+}
+
+.grcDashboardColumns {
+    gap: 1rem;
+}
+
+@media (max-width: 900px) {
+    .grcDashboardHeader,
+    .grcDashboardColumns {
+        flex-direction: column;
+    }
+
+    .grcDashboardColumns > .sapMFlexItem {
+        width: 100% !important;
+    }
+}

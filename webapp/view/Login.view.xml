@@ -1,0 +1,45 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Login"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page id="loginPage" showHeader="false" class="grcLoginPage">
+        <VBox justifyContent="Center" alignItems="Center" height="100%">
+
+            <VBox id="loginCard" class="grcLoginCard" width="24rem">
+                <core:Icon src="sap-icon://shield" size="2.5rem" class="sapUiMediumMarginBottom"/>
+                <Title text="SAP GRC Access Management" level="H2" class="sapUiTinyMarginBottom"/>
+                <Text text="Sign in to continue" class="sapUiMediumMarginBottom"/>
+
+                <Label text="Username" required="true"/>
+                <Input
+                    id="usernameInput"
+                    placeholder="e.g. rsharma"
+                    class="sapUiTinyMarginBottom"/>
+
+                <Label text="Password" required="true"/>
+                <Input
+                    id="passwordInput"
+                    type="Password"
+                    placeholder="Any value works in this demo"
+                    class="sapUiSmallMarginBottom"/>
+
+                <Button
+                    id="signInButton"
+                    text="Sign In"
+                    type="Emphasized"
+                    width="100%"
+                    press="onSignIn"
+                    class="sapUiSmallMarginBottom"/>
+
+                <MessageStrip
+                    text="Demo accounts: rsharma (Employee), pmalhotra or vchaudhary (Manager), akumar or kmehra (SAP/Security Team). Any password is accepted."
+                    type="Information"
+                    showIcon="true"/>
+            </VBox>
+
+        </VBox>
+    </Page>
+
+</mvc:View>

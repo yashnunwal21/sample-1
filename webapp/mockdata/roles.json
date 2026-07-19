@@ -1,0 +1,310 @@
+{
+  "roles": [
+    {
+      "roleId": "R001",
+      "roleName": "Z_MM_PO_CREATE",
+      "description": "Create and Change Purchase Orders",
+      "type": "Single",
+      "businessProcess": "Procure to Pay",
+      "ownerId": "U006",
+      "ownerName": "Vikram Chaudhary",
+      "status": "Active",
+      "riskLevel": "High",
+      "assignedUsersCount": 14,
+      "createdOn": "2019-04-12",
+      "tcodes": [
+        "ME21N",
+        "ME22N",
+        "ME23N"
+      ],
+      "authObjects": [
+        {
+          "objectId": "M_BEST_BSA",
+          "description": "Purchasing Document: Document Type",
+          "fields": [
+            "BSART",
+            "ACTVT"
+          ]
+        },
+        {
+          "objectId": "M_BEST_EKO",
+          "description": "Purchasing Document: Purchasing Organization",
+          "fields": [
+            "EKORG",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R002",
+      "roleName": "Z_MM_PO_APPROVE",
+      "description": "Approve/Release Purchase Orders",
+      "type": "Single",
+      "businessProcess": "Procure to Pay",
+      "ownerId": "U006",
+      "ownerName": "Vikram Chaudhary",
+      "status": "Active",
+      "riskLevel": "High",
+      "assignedUsersCount": 9,
+      "createdOn": "2019-04-12",
+      "tcodes": [
+        "ME28",
+        "ME29N"
+      ],
+      "authObjects": [
+        {
+          "objectId": "M_EINK_FRG",
+          "description": "Release Purchasing Documents",
+          "fields": [
+            "FRGGR",
+            "FRGCO"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R003",
+      "roleName": "Z_MM_VENDOR_MASTER",
+      "description": "Maintain Vendor Master Data",
+      "type": "Single",
+      "businessProcess": "Procure to Pay",
+      "ownerId": "U006",
+      "ownerName": "Vikram Chaudhary",
+      "status": "Active",
+      "riskLevel": "Critical",
+      "assignedUsersCount": 5,
+      "createdOn": "2018-11-02",
+      "tcodes": [
+        "XK01",
+        "XK02",
+        "FK02"
+      ],
+      "authObjects": [
+        {
+          "objectId": "F_LFA1_APP",
+          "description": "Vendor Master: Application Authorization",
+          "fields": [
+            "ACTVT"
+          ]
+        },
+        {
+          "objectId": "F_LFA1_BUK",
+          "description": "Vendor Master: Company Code",
+          "fields": [
+            "BUKRS",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R004",
+      "roleName": "Z_FI_GL_POST",
+      "description": "Post General Ledger Journal Entries",
+      "type": "Single",
+      "businessProcess": "Record to Report",
+      "ownerId": "U004",
+      "ownerName": "Priya Malhotra",
+      "status": "Active",
+      "riskLevel": "High",
+      "assignedUsersCount": 11,
+      "createdOn": "2017-06-20",
+      "tcodes": [
+        "FB50",
+        "F-02",
+        "FBL3N"
+      ],
+      "authObjects": [
+        {
+          "objectId": "F_BKPF_BUK",
+          "description": "Accounting Document: Company Code",
+          "fields": [
+            "BUKRS",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R005",
+      "roleName": "Z_FI_AP_CLERK",
+      "description": "Process Accounts Payable Invoices",
+      "type": "Single",
+      "businessProcess": "Procure to Pay",
+      "ownerId": "U004",
+      "ownerName": "Priya Malhotra",
+      "status": "Active",
+      "riskLevel": "Medium",
+      "assignedUsersCount": 18,
+      "createdOn": "2017-06-20",
+      "tcodes": [
+        "FB60",
+        "MIRO",
+        "FBL1N"
+      ],
+      "authObjects": [
+        {
+          "objectId": "F_BKPF_BUK",
+          "description": "Accounting Document: Company Code",
+          "fields": [
+            "BUKRS",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R006",
+      "roleName": "Z_FI_PAYMENT_RUN",
+      "description": "Execute Automatic Payment Run",
+      "type": "Single",
+      "businessProcess": "Record to Report",
+      "ownerId": "U004",
+      "ownerName": "Priya Malhotra",
+      "status": "Active",
+      "riskLevel": "Critical",
+      "assignedUsersCount": 4,
+      "createdOn": "2017-09-05",
+      "tcodes": [
+        "F110"
+      ],
+      "authObjects": [
+        {
+          "objectId": "F_REGU_BUK",
+          "description": "Payment Program: Company Codes",
+          "fields": [
+            "BUKRS",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R007",
+      "roleName": "Z_BASIS_USER_ADMIN",
+      "description": "Create and Maintain User Master Records",
+      "type": "Single",
+      "businessProcess": "IT Security",
+      "ownerId": "U003",
+      "ownerName": "Amit Kumar",
+      "status": "Active",
+      "riskLevel": "Critical",
+      "assignedUsersCount": 3,
+      "createdOn": "2015-01-15",
+      "tcodes": [
+        "SU01",
+        "SU10",
+        "PFCG"
+      ],
+      "authObjects": [
+        {
+          "objectId": "S_USER_GRP",
+          "description": "User Master Maintenance: User Groups",
+          "fields": [
+            "CLASS",
+            "ACTVT"
+          ]
+        },
+        {
+          "objectId": "S_USER_AGR",
+          "description": "User Master Maintenance: Role Assignment",
+          "fields": [
+            "ACT_GROUP",
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R008",
+      "roleName": "Z_GRC_ADMIN",
+      "description": "GRC Access Control Administration",
+      "type": "Composite",
+      "businessProcess": "Governance Risk Compliance",
+      "ownerId": "U007",
+      "ownerName": "Kavita Mehra",
+      "status": "Active",
+      "riskLevel": "Critical",
+      "assignedUsersCount": 2,
+      "createdOn": "2016-03-01",
+      "tcodes": [
+        "GRAC_RISK_MAINT",
+        "GRAC_MITCTRL_MAINT",
+        "GRAC_SPM"
+      ],
+      "authObjects": [
+        {
+          "objectId": "GRAC_APP",
+          "description": "GRC Access Control: Application Authorization",
+          "fields": [
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R009",
+      "roleName": "Z_GRC_RISK_OFFICER",
+      "description": "Review SoD Risk Findings and Approve Mitigations",
+      "type": "Single",
+      "businessProcess": "Governance Risk Compliance",
+      "ownerId": "U007",
+      "ownerName": "Kavita Mehra",
+      "status": "Active",
+      "riskLevel": "Medium",
+      "assignedUsersCount": 3,
+      "createdOn": "2016-03-01",
+      "tcodes": [
+        "GRAC_RISK_ANALYSIS",
+        "GRAC_MITCTRL_MAINT"
+      ],
+      "authObjects": [
+        {
+          "objectId": "GRAC_APP",
+          "description": "GRC Access Control: Application Authorization",
+          "fields": [
+            "ACTVT"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    },
+    {
+      "roleId": "R010",
+      "roleName": "Z_MM_INVENTORY_CLERK",
+      "description": "Goods Receipt and Inventory Management",
+      "type": "Single",
+      "businessProcess": "Procure to Pay",
+      "ownerId": "U006",
+      "ownerName": "Vikram Chaudhary",
+      "status": "Inactive",
+      "riskLevel": "Low",
+      "assignedUsersCount": 0,
+      "createdOn": "2014-08-11",
+      "tcodes": [
+        "MIGO",
+        "MB1A"
+      ],
+      "authObjects": [
+        {
+          "objectId": "M_MSEG_WMB",
+          "description": "Goods Movement: Movement Type",
+          "fields": [
+            "WERKS",
+            "BWART"
+          ]
+        }
+      ],
+      "sapSystem": "ECP_100"
+    }
+  ]
+}

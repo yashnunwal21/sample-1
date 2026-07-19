@@ -1,0 +1,14 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Reports"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="ReportsPage" title="Reports &amp; Analytics" showNavButton="false" class="sapUiContentPadding">
+        <MessageStrip
+            text="Reports &amp; Analytics module is under construction. This view is wired into routing and ready for development."
+            type="Information"
+            showIcon="true"
+            class="sapUiMediumMarginBottom"/>
+    </Page>
+
+</mvc:View>

@@ -1,0 +1,112 @@
+{
+  "_version": "1.85.0",
+  "sap.app": {
+    "id": "com.sap.grc.sapgrcaccessmanagement",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.27.0",
+      "toolsId": "bc4a842f-2f5a-4cdd-af82-64460be7f71b"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.149.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ui.layout": {},
+        "sap.tnt": {},
+        "sap.f": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.sap.grc.sapgrcaccessmanagement.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "navContainer",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.sap.grc.sapgrcaccessmanagement.view",
+        "async": true,
+        "viewPath": "com.sap.grc.sapgrcaccessmanagement.view"
+      },
+      "routes": [
+        { "name": "login", "pattern": "login", "target": ["login"] },
+        { "name": "dashboard", "pattern": ":?query:", "target": ["dashboard"] },
+        { "name": "requestList", "pattern": "requests", "target": ["requestList"] },
+        { "name": "requestCreate", "pattern": "requests/create", "target": ["requestCreate"] },
+        { "name": "requestDetail", "pattern": "requests/{requestId}", "target": ["requestDetail"] },
+        { "name": "approvals", "pattern": "approvals", "target": ["approvals"] },
+        { "name": "roles", "pattern": "roles", "target": ["roles"] },
+        { "name": "roleDetail", "pattern": "roles/{roleId}", "target": ["roleDetail"] },
+        { "name": "riskAnalysis", "pattern": "risk-analysis", "target": ["riskAnalysis"] },
+        { "name": "reports", "pattern": "reports", "target": ["reports"] },
+        { "name": "settings", "pattern": "settings", "target": ["settings"] }
+      ],
+      "targets": {
+        "login": { "id": "login", "name": "Login" },
+        "dashboard": { "id": "dashboard", "name": "Dashboard" },
+        "requestList": { "id": "requestList", "name": "AccessRequestList" },
+        "requestCreate": { "id": "requestCreate", "name": "AccessRequestCreate" },
+        "requestDetail": { "id": "requestDetail", "name": "AccessRequestDetail" },
+        "approvals": { "id": "approvals", "name": "Approvals" },
+        "roles": { "id": "roles", "name": "Roles" },
+        "roleDetail": { "id": "roleDetail", "name": "RoleDetail" },
+        "riskAnalysis": { "id": "riskAnalysis", "name": "RiskAnalysis" },
+        "reports": { "id": "reports", "name": "Reports" },
+        "settings": { "id": "settings", "name": "Settings" }
+      }
+    },
+    "rootView": {
+      "viewName": "com.sap.grc.sapgrcaccessmanagement.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

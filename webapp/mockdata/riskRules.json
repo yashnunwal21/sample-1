@@ -1,0 +1,91 @@
+{
+  "riskRules": [
+    {
+      "ruleId": "SOD-001", "riskId": "P001", "name": "Create Purchase Order vs Approve Purchase Order",
+      "riskLevel": "High", "businessProcess": "Procure to Pay", "status": "Active",
+      "description": "A user who can both create and approve purchase orders can push through unauthorized purchases.",
+      "conflictingFunctions": [
+        { "functionId": "PF01", "name": "Create Purchase Order", "roles": ["R001"] },
+        { "functionId": "PF02", "name": "Approve Purchase Order", "roles": ["R002"] }
+      ]
+    },
+    {
+      "ruleId": "SOD-002", "riskId": "P002", "name": "Maintain Vendor Master vs Post AP Invoice",
+      "riskLevel": "Critical", "businessProcess": "Procure to Pay", "status": "Active",
+      "description": "A user who can create/change vendor bank details and post invoices can redirect payments to a fraudulent account.",
+      "conflictingFunctions": [
+        { "functionId": "PF03", "name": "Maintain Vendor Master", "roles": ["R003"] },
+        { "functionId": "PF04", "name": "Post AP Invoice", "roles": ["R005"] }
+      ]
+    },
+    {
+      "ruleId": "SOD-003", "riskId": "P003", "name": "Post GL Journal Entry vs Execute Payment Run",
+      "riskLevel": "Critical", "businessProcess": "Record to Report", "status": "Active",
+      "description": "A user who can post journal entries and execute the payment run can create and pay fictitious entries.",
+      "conflictingFunctions": [
+        { "functionId": "PF05", "name": "Post GL Journal Entry", "roles": ["R004"] },
+        { "functionId": "PF06", "name": "Execute Payment Run", "roles": ["R006"] }
+      ]
+    },
+    {
+      "ruleId": "SOD-004", "riskId": "P004", "name": "User Administration vs Role Assignment",
+      "riskLevel": "Critical", "businessProcess": "IT Security", "status": "Active",
+      "description": "A user who can create user accounts and assign roles can self-provision privileged access.",
+      "conflictingFunctions": [
+        { "functionId": "PF07", "name": "Create/Change User Master", "roles": ["R007"] },
+        { "functionId": "PF08", "name": "Assign Roles to Users", "roles": ["R007"] }
+      ]
+    },
+    {
+      "ruleId": "SOD-005", "riskId": "P005", "name": "Create Purchase Order vs Maintain Vendor Master",
+      "riskLevel": "Medium", "businessProcess": "Procure to Pay", "status": "Active",
+      "description": "A user who can create purchase orders and maintain vendor master data can set up and order from a fictitious vendor.",
+      "conflictingFunctions": [
+        { "functionId": "PF01", "name": "Create Purchase Order", "roles": ["R001"] },
+        { "functionId": "PF03", "name": "Maintain Vendor Master", "roles": ["R003"] }
+      ]
+    }
+  ],
+  "riskFindings": [
+    { "findingId": "RF-501", "ruleId": "SOD-001", "userId": "U005", "userName": "Neha Gupta", "requestId": "AR-1023", "status": "Open", "detectedOn": "2026-06-30T10:10:00", "riskLevel": "High" },
+    { "findingId": "RF-502", "ruleId": "SOD-002", "userId": "U010", "userName": "Batch Service Account", "requestId": "AR-1020", "status": "Mitigated", "detectedOn": "2026-06-25T09:05:00", "riskLevel": "Critical" },
+    { "findingId": "RF-503", "ruleId": "SOD-003", "userId": "U003", "userName": "Amit Kumar", "requestId": "AR-1021", "status": "Mitigated", "detectedOn": "2026-06-27T22:20:00", "riskLevel": "Critical" },
+    { "findingId": "RF-504", "ruleId": "SOD-001", "userId": "U001", "userName": "Rohan Sharma", "requestId": "AR-1017", "status": "Remediated", "detectedOn": "2026-06-18T15:35:00", "riskLevel": "High" },
+    { "findingId": "RF-505", "ruleId": "SOD-002", "userId": "U001", "userName": "Rohan Sharma", "requestId": "AR-1017", "status": "Remediated", "detectedOn": "2026-06-18T15:35:00", "riskLevel": "Critical" },
+    { "findingId": "RF-506", "ruleId": "SOD-005", "userId": "U002", "userName": "Anjali Verma", "requestId": null, "status": "Open", "detectedOn": "2026-06-15T08:00:00", "riskLevel": "Medium" },
+    { "findingId": "RF-507", "ruleId": "SOD-004", "userId": "U003", "userName": "Amit Kumar", "requestId": null, "status": "Mitigated", "detectedOn": "2026-05-20T09:00:00", "riskLevel": "Critical" }
+  ],
+  "mitigatingControls": [
+    {
+      "controlId": "MC-001", "name": "Vendor Bank Change Dual Review", "ruleId": "SOD-002",
+      "description": "All vendor bank detail changes are reviewed weekly by GRC before payment runs are released.",
+      "controlOwnerId": "U007", "controlOwnerName": "Kavita Mehra", "validFrom": "2025-01-01", "validTo": "2026-12-31", "status": "Active"
+    },
+    {
+      "controlId": "MC-002", "name": "Batch Account Payment Log Review", "ruleId": "SOD-002",
+      "description": "Daily automated log review of batch service account postings and payment runs.",
+      "controlOwnerId": "U003", "controlOwnerName": "Amit Kumar", "validFrom": "2025-06-01", "validTo": "2026-12-31", "status": "Active"
+    },
+    {
+      "controlId": "MC-003", "name": "Firefighter Session Log Review", "ruleId": "SOD-003",
+      "description": "Post-session review of all emergency/firefighter access logs within 48 hours.",
+      "controlOwnerId": "U008", "controlOwnerName": "Tara Singh", "validFrom": "2024-01-01", "validTo": "2026-12-31", "status": "Active"
+    },
+    {
+      "controlId": "MC-004", "name": "Quarterly Security Admin Access Recertification", "ruleId": "SOD-004",
+      "description": "Quarterly recertification of all users holding user administration access.",
+      "controlOwnerId": "U007", "controlOwnerName": "Kavita Mehra", "validFrom": "2023-01-01", "validTo": "2026-12-31", "status": "Active"
+    }
+  ],
+  "simulations": [
+    {
+      "simulationId": "SIM-201", "userId": "U001", "userName": "Rohan Sharma", "requestedRoles": ["R005"],
+      "runOn": "2026-06-30T14:00:00", "runById": "U004", "conflictsFound": 0, "result": "Clean"
+    },
+    {
+      "simulationId": "SIM-202", "userId": "U005", "userName": "Neha Gupta", "requestedRoles": ["R001", "R002"],
+      "runOn": "2026-06-30T09:50:00", "runById": "U002", "conflictsFound": 1, "result": "Conflict",
+      "conflicts": ["SOD-001"]
+    }
+  ]
+}

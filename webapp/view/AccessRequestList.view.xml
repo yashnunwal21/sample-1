@@ -1,0 +1,53 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.AccessRequestList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="AccessRequestListPage" title="Access Requests" showNavButton="false" class="sapUiContentPadding">
+
+        <headerContent>
+            <Button text="New Request" type="Emphasized" icon="sap-icon://add" press="onCreatePress"/>
+        </headerContent>
+
+        <Table
+            id="requestsTable"
+            items="{accessRequests>/accessRequests}"
+            noDataText="No access requests found"
+            growing="true"
+            growingThreshold="20">
+            <columns>
+                <Column><Text text="Request #"/></Column>
+                <Column><Text text="Requested For"/></Column>
+                <Column><Text text="Role"/></Column>
+                <Column><Text text="Status"/></Column>
+                <Column><Text text="Approver"/></Column>
+                <Column><Text text="Created On"/></Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation" press="onRequestPress">
+                    <cells>
+                        <ObjectIdentifier title="{accessRequests>requestNumber}"/>
+                        <Text text="{accessRequests>targetUserName}"/>
+                        <Text text="{accessRequests>roleName}"/>
+                        <ObjectStatus
+                            text="{
+                                path: 'accessRequests>status',
+                                formatter: '.formatter.requestStatusText'
+                            }"
+                            state="{
+                                path: 'accessRequests>status',
+                                formatter: '.formatter.statusState'
+                            }"/>
+                        <Text text="{accessRequests>approverName}"/>
+                        <Text text="{
+                            path: 'accessRequests>createdOn',
+                            formatter: '.formatter.formatDateTime'
+                        }"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+
+    </Page>
+
+</mvc:View>

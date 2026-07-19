@@ -1,0 +1,53 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt">
+
+    <tnt:ToolPage id="toolPage">
+
+        <tnt:header>
+            <tnt:ToolHeader id="toolPageHeader" visible="{appView>/showShellChrome}">
+                <Button
+                    icon="sap-icon://menu2"
+                    type="Transparent"
+                    press="onSideNavButtonPress"
+                    tooltip="Expand/Collapse Side Navigation"/>
+                <Title text="SAP GRC Access Management" level="H3"/>
+                <ToolbarSpacer/>
+                <Button
+                    id="notificationButton"
+                    icon="sap-icon://bell"
+                    type="Transparent"
+                    text="{path: 'appView>/unreadCount', formatter: '.formatter.unreadBadgeText'}"
+                    press="onNotificationPress"
+                    tooltip="Notifications"/>
+                <Avatar
+                    displaySize="XS"
+                    initials="{appView>/currentUserInitials}"
+                    tooltip="{appView>/currentUserName} (sign out)"
+                    press="onAvatarPress"/>
+            </tnt:ToolHeader>
+        </tnt:header>
+
+        <tnt:sideContent>
+            <tnt:SideNavigation id="sideNavigation" itemSelect="onNavigate" visible="{appView>/showShellChrome}">
+                <tnt:NavigationList>
+                    <tnt:NavigationListItem text="Dashboard" icon="sap-icon://home" key="dashboard"/>
+                    <tnt:NavigationListItem text="Access Requests" icon="sap-icon://document-text" key="requests"/>
+                    <tnt:NavigationListItem text="Roles" icon="sap-icon://shield" key="roles"/>
+                    <tnt:NavigationListItem text="Approvals" icon="sap-icon://task" key="approvals" visible="{appView>/isManagerOrGrc}"/>
+                    <tnt:NavigationListItem text="Risk Analysis" icon="sap-icon://alert" key="risk" visible="{appView>/isManagerOrGrc}"/>
+                    <tnt:NavigationListItem text="Reports" icon="sap-icon://business-objects-experience" key="reports" visible="{appView>/isManagerOrGrc}"/>
+                    <tnt:NavigationListItem text="Settings" icon="sap-icon://action-settings" key="settings" visible="{appView>/isManagerOrGrc}"/>
+                </tnt:NavigationList>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <tnt:mainContents>
+            <NavContainer id="navContainer"/>
+        </tnt:mainContents>
+
+    </tnt:ToolPage>
+
+</mvc:View>

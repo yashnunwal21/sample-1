@@ -1,0 +1,104 @@
+{
+  "accessRequests": [
+    {
+      "requestId": "AR-2001", "requestNumber": "REQ-2026-0001",
+      "requestorId": "U004", "requestorName": "Priya Malhotra",
+      "targetUserId": "U004", "targetUserName": "Priya Malhotra",
+      "approverId": "U007", "approverName": "Kavita Mehra",
+      "roleId": "R005", "roleName": "Z_FI_AP_CLERK",
+      "businessJustification": "Need AP posting access to cover month-end close for the AP team.",
+      "managerComment": null, "securityComment": null,
+      "status": "SUBMITTED", "createdOn": "2026-07-02T09:00:00", "updatedOn": "2026-07-02T09:00:00"
+    },
+    {
+      "requestId": "AR-2002", "requestNumber": "REQ-2026-0002",
+      "requestorId": "U006", "requestorName": "Vikram Chaudhary",
+      "targetUserId": "U006", "targetUserName": "Vikram Chaudhary",
+      "approverId": "U007", "approverName": "Kavita Mehra",
+      "roleId": "R001", "roleName": "Z_MM_PO_CREATE",
+      "businessJustification": "Backup PO creation access while procurement team is short-staffed.",
+      "managerComment": null, "securityComment": null,
+      "status": "SUBMITTED", "createdOn": "2026-07-02T10:15:00", "updatedOn": "2026-07-02T10:15:00"
+    },
+    {
+      "requestId": "AR-2003", "requestNumber": "REQ-2026-0003",
+      "requestorId": "U008", "requestorName": "Tara Singh",
+      "targetUserId": "U008", "targetUserName": "Tara Singh",
+      "approverId": "U007", "approverName": "Kavita Mehra",
+      "roleId": "R009", "roleName": "Z_GRC_RISK_OFFICER",
+      "businessJustification": "Requesting risk officer role renewal after annual recertification.",
+      "managerComment": null, "securityComment": null,
+      "status": "SUBMITTED", "createdOn": "2026-07-01T14:30:00", "updatedOn": "2026-07-01T14:30:00"
+    },
+    {
+      "requestId": "AR-2004", "requestNumber": "REQ-2026-0004",
+      "requestorId": "U002", "requestorName": "Anjali Verma",
+      "targetUserId": "U002", "targetUserName": "Anjali Verma",
+      "approverId": "U006", "approverName": "Vikram Chaudhary",
+      "roleId": "R001", "roleName": "Z_MM_PO_CREATE",
+      "businessJustification": "Purchasing manager needs direct PO creation access for supplier escalations.",
+      "managerComment": "Approved, needed for coverage during vacation season.", "securityComment": null,
+      "status": "MANAGER_APPROVED", "createdOn": "2026-06-29T11:00:00", "updatedOn": "2026-06-30T09:00:00"
+    },
+    {
+      "requestId": "AR-2005", "requestNumber": "REQ-2026-0005",
+      "requestorId": "U005", "requestorName": "Neha Gupta",
+      "targetUserId": "U005", "targetUserName": "Neha Gupta",
+      "approverId": "U002", "approverName": "Anjali Verma",
+      "roleId": "R002", "roleName": "Z_MM_PO_APPROVE",
+      "businessJustification": "Buyer needs PO approval access to cover for vacationing colleague.",
+      "managerComment": "Approved, short-term coverage only.", "securityComment": null,
+      "status": "MANAGER_APPROVED", "createdOn": "2026-06-30T10:05:00", "updatedOn": "2026-06-30T12:00:00"
+    },
+    {
+      "requestId": "AR-2006", "requestNumber": "REQ-2026-0006",
+      "requestorId": "U009", "requestorName": "Rahul Kapoor",
+      "targetUserId": "U009", "targetUserName": "Rahul Kapoor",
+      "approverId": "U004", "approverName": "Priya Malhotra",
+      "roleId": "R004", "roleName": "Z_FI_GL_POST",
+      "businessJustification": "Additional GL posting access requested for new cost center coverage.",
+      "managerComment": "Approved.", "securityComment": "Provisioned, no SoD conflicts.",
+      "status": "SAP_APPROVED", "createdOn": "2026-06-24T08:00:00", "updatedOn": "2026-06-25T09:00:00"
+    },
+    {
+      "requestId": "AR-2007", "requestNumber": "REQ-2026-0007",
+      "requestorId": "U001", "requestorName": "Rohan Sharma",
+      "targetUserId": "U001", "targetUserName": "Rohan Sharma",
+      "approverId": "U006", "approverName": "Vikram Chaudhary",
+      "roleId": "R003", "roleName": "Z_MM_VENDOR_MASTER",
+      "businessJustification": "Requested vendor master access to speed up own invoice processing.",
+      "managerComment": "Rejected: not required for AP accountant role and creates SoD conflict.", "securityComment": null,
+      "status": "MANAGER_REJECTED", "createdOn": "2026-06-18T15:30:00", "updatedOn": "2026-06-18T16:00:00"
+    },
+    {
+      "requestId": "AR-2008", "requestNumber": "REQ-2026-0008",
+      "requestorId": "U010", "requestorName": "Batch Service Account",
+      "targetUserId": "U010", "targetUserName": "Batch Service Account",
+      "approverId": "U003", "approverName": "Amit Kumar",
+      "roleId": "R007", "roleName": "Z_BASIS_USER_ADMIN",
+      "businessJustification": "Service account requested user administration role for automation script.",
+      "managerComment": "Approved by system owner.", "securityComment": "Rejected: critical SoD risk, service accounts cannot hold user admin roles.",
+      "status": "SAP_REJECTED", "createdOn": "2026-06-27T09:00:00", "updatedOn": "2026-06-27T09:45:00"
+    },
+    {
+      "requestId": "AR-2009", "requestNumber": "REQ-2026-0009",
+      "requestorId": "U003", "requestorName": "Amit Kumar",
+      "targetUserId": "U003", "targetUserName": "Amit Kumar",
+      "approverId": "U007", "approverName": "Kavita Mehra",
+      "roleId": "R007", "roleName": "Z_BASIS_USER_ADMIN",
+      "businessJustification": "Annual recertification of security administrator access.",
+      "managerComment": "Approved.", "securityComment": "Confirmed, quarterly recertification control MC-004 applied.",
+      "status": "CLOSED", "createdOn": "2026-05-20T08:30:00", "updatedOn": "2026-05-21T09:00:00"
+    },
+    {
+      "requestId": "AR-2010", "requestNumber": "REQ-2026-0010",
+      "requestorId": "U001", "requestorName": "Rohan Sharma",
+      "targetUserId": "U001", "targetUserName": "Rohan Sharma",
+      "approverId": "U006", "approverName": "Vikram Chaudhary",
+      "roleId": "R005", "roleName": "Z_FI_AP_CLERK",
+      "businessJustification": "New AP accountant requires posting access for month-end close support.",
+      "managerComment": "Approved.", "securityComment": "Provisioned.",
+      "status": "CLOSED", "createdOn": "2026-06-01T09:00:00", "updatedOn": "2026-06-02T10:00:00"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.scp/
+.env
+Makefile*.mta
+mta_archives
+mta-*
+resources
+archive.zip
+.*_mta_build_tmp
+coverage/
+.vscode/settings.json
+.vscode/
+ui5-local.yaml

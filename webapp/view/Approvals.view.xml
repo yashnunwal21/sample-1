@@ -1,0 +1,94 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Approvals"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="ApprovalsPage" title="Approvals" showNavButton="false" class="sapUiContentPadding">
+
+        <VBox>
+            <Title text="Manager Approvals" level="H3" class="sapUiSmallMarginBottom"/>
+            <Text text="Requests awaiting your approval as manager" class="sapUiSmallMarginBottom"/>
+            <Table
+                id="managerQueueTable"
+                items="{approvalsView>/managerQueue}"
+                noDataText="No requests pending your approval">
+                <columns>
+                    <Column><Text text="Request #"/></Column>
+                    <Column><Text text="Requested For"/></Column>
+                    <Column><Text text="Role"/></Column>
+                    <Column><Text text="Justification"/></Column>
+                    <Column><Text text=""/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onRowPress">
+                        <cells>
+                            <ObjectIdentifier title="{approvalsView>requestNumber}"/>
+                            <Text text="{approvalsView>targetUserName}"/>
+                            <Text text="{approvalsView>roleName}"/>
+                            <Text text="{approvalsView>businessJustification}" maxLines="2"/>
+                            <Button text="Review" type="Emphasized" press="onRowPress"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+
+        <VBox class="sapUiLargeMarginTop">
+            <Title text="Security Review Queue" level="H3" class="sapUiSmallMarginBottom"/>
+            <Text text="Manager-approved requests awaiting Security / SAP provisioning" class="sapUiSmallMarginBottom"/>
+            <Table
+                id="securityQueueTable"
+                items="{approvalsView>/securityQueue}"
+                noDataText="No requests pending security review">
+                <columns>
+                    <Column><Text text="Request #"/></Column>
+                    <Column><Text text="Requested For"/></Column>
+                    <Column><Text text="Role"/></Column>
+                    <Column><Text text="Manager Comment"/></Column>
+                    <Column><Text text=""/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onRowPress">
+                        <cells>
+                            <ObjectIdentifier title="{approvalsView>requestNumber}"/>
+                            <Text text="{approvalsView>targetUserName}"/>
+                            <Text text="{approvalsView>roleName}"/>
+                            <Text text="{approvalsView>managerComment}" maxLines="2"/>
+                            <Button text="Review" type="Emphasized" press="onRowPress"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+
+        <VBox class="sapUiLargeMarginTop">
+            <Title text="Provisioning Queue" level="H3" class="sapUiSmallMarginBottom"/>
+            <Text text="SAP GRC approved requests awaiting provisioning completion" class="sapUiSmallMarginBottom"/>
+            <Table
+                id="provisioningQueueTable"
+                items="{approvalsView>/provisioningQueue}"
+                noDataText="No requests pending provisioning">
+                <columns>
+                    <Column><Text text="Request #"/></Column>
+                    <Column><Text text="Requested For"/></Column>
+                    <Column><Text text="Role"/></Column>
+                    <Column><Text text="Security Comment"/></Column>
+                    <Column><Text text=""/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press="onRowPress">
+                        <cells>
+                            <ObjectIdentifier title="{approvalsView>requestNumber}"/>
+                            <Text text="{approvalsView>targetUserName}"/>
+                            <Text text="{approvalsView>roleName}"/>
+                            <Text text="{approvalsView>securityComment}" maxLines="2"/>
+                            <Button text="Review" type="Emphasized" press="onRowPress"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+
+    </Page>
+
+</mvc:View>

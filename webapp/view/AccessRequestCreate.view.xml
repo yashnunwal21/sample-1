@@ -1,0 +1,159 @@
+﻿<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.AccessRequestCreate"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page id="AccessRequestCreatePage" title="Create Access Request" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
+        <VBox class="grcRequestCreate">
+            <Title text="Access Request" level="H3" class="sapUiTinyMarginBottom"/>
+            <Text text="Tell us who this request is for, then select a business area and subcategory." class="sapUiMediumMarginBottom"/>
+
+            <Title text="Who is this request for?" level="H4" class="sapUiTinyMarginBottom"/>
+            <SegmentedButton id="requesterTypeButton" selectedKey="{formView>/requesterType}" select="onRequesterTypeChange" class="sapUiSmallMarginBottom">
+                <items>
+                    <SegmentedButtonItem key="MSIL" text="MSIL Employee"/>
+                    <SegmentedButtonItem key="OUTSIDER" text="Outsider / Non-MSIL User"/>
+                </items>
+            </SegmentedButton>
+
+            <VBox visible="{= ${formView>/requesterType} === 'MSIL' }" class="sapUiMediumMarginBottom">
+                <RadioButtonGroup id="forSelfGroup" selectedIndex="{formView>/forSelfIndex}" columns="2" class="sapUiTinyMarginBottom">
+                    <buttons>
+                        <RadioButton text="For Yourself"/>
+                        <RadioButton text="For Another MSIL Employee"/>
+                    </buttons>
+                </RadioButtonGroup>
+
+                <Panel headerText="Employee Details" visible="{= ${formView>/forSelfIndex} === 0 }">
+                    <Text text="Employee ID: {formView>/currentEmployee/employeeId}"/>
+                    <Text text="Name: {formView>/currentEmployee/fullName}"/>
+                    <Text text="Department: {formView>/currentEmployee/department}"/>
+                    <Text text="Plant: {formView>/currentEmployee/plant}"/>
+                </Panel>
+
+                <VBox visible="{= ${formView>/forSelfIndex} === 1 }">
+                    <Label text="MSIL Employee ID" required="true"/>
+                    <HBox class="sapUiTinyMarginBottom">
+                        <Input
+                            id="employeeIdInput"
+                            value="{formView>/employeeIdInput}"
+                            maxLength="6"
+                            width="10rem"
+                            placeholder="6-digit ID"
+                            class="sapUiTinyMarginEnd"/>
+                        <Button text="Look Up" press="onEmployeeLookup"/>
+                    </HBox>
+                    <MessageStrip
+                        text="{formView>/employeeLookupError}"
+                        type="Error"
+                        showIcon="true"
+                        visible="{= !!${formView>/employeeLookupError} }"
+                        class="sapUiTinyMarginBottom"/>
+                    <Panel headerText="Employee Found" visible="{= !!${formView>/targetEmployee} }">
+                        <Text text="Name: {formView>/targetEmployee/fullName}"/>
+                        <Text text="Department: {formView>/targetEmployee/department}"/>
+                        <Text text="Plant: {formView>/targetEmployee/plant}"/>
+                        <Text text="Manager: {formView>/targetEmployee/managerName}"/>
+                    </Panel>
+                </VBox>
+            </VBox>
+
+            <f:SimpleForm
+                id="outsiderForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="1"
+                emptySpanL="1"
+                emptySpanM="0"
+                columnsXL="2"
+                columnsL="2"
+                columnsM="1"
+                visible="{= ${formView>/requesterType} === 'OUTSIDER' }"
+                class="sapUiMediumMarginBottom">
+
+                <Label text="Full Name" required="true"/>
+                <Input value="{formView>/outsiderName}"/>
+
+                <Label text="Organization / Company" required="true"/>
+                <Input value="{formView>/outsiderOrganization}"/>
+
+                <Label text="Email" required="true"/>
+                <Input value="{formView>/outsiderEmail}" type="Email"/>
+
+                <Label text="Mobile Number" required="true"/>
+                <Input value="{formView>/outsiderMobile}" type="Tel"/>
+
+                <Label text="Purpose of Access" required="true"/>
+                <TextArea value="{formView>/outsiderPurpose}" rows="2" width="100%"/>
+            </f:SimpleForm>
+
+            <f:SimpleForm
+                id="requestSelectorForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="3"
+                labelSpanL="3"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="1"
+                emptySpanL="1"
+                emptySpanM="0"
+                columnsXL="2"
+                columnsL="2"
+                columnsM="1">
+
+                <Label text="Business Area" required="true"/>
+                <VBox>
+                    <Select
+                        id="businessAreaSelect"
+                        width="100%"
+                        forceSelection="false"
+                        selectedKey="{formView>/selectedBusinessAreaId}"
+                        change="onBusinessAreaChange"
+                        items="{formView>/businessAreas}">
+                        <core:Item key="{formView>businessAreaId}" text="{formView>name}"/>
+                    </Select>
+                    <Text text="{formView>/selectedBusinessAreaDescription}" class="grcFieldHelp sapUiTinyMarginTop"/>
+                </VBox>
+
+                <Label text="Subcategory" required="true" visible="{= !!${formView>/selectedBusinessAreaId} }"/>
+                <VBox visible="{= !!${formView>/selectedBusinessAreaId} }">
+                    <Select
+                        id="subcategorySelect"
+                        width="100%"
+                        forceSelection="false"
+                        selectedKey="{formView>/selectedSubcategoryId}"
+                        change="onSubcategoryChange"
+                        items="{formView>/subcategories}">
+                        <core:Item key="{formView>subcategoryId}" text="{formView>name}"/>
+                    </Select>
+                    <Text text="{formView>/selectedSubcategoryDescription}" class="grcFieldHelp sapUiTinyMarginTop"/>
+                </VBox>
+            </f:SimpleForm>
+
+            <Panel
+                id="requestDetailsPanel"
+                headerText="Request Details"
+                visible="{= !!${formView>/selectedSubcategoryId} }"
+                class="sapUiMediumMarginTop">
+                <VBox id="dynamicFieldsBox" class="grcDynamicFieldList"/>
+            </Panel>
+        </VBox>
+
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="Cancel" press="onNavBack"/>
+                <Button text="Submit Request" type="Emphasized" press="onSubmit"/>
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

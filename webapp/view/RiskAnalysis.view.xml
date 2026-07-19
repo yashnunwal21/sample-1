@@ -1,0 +1,14 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.RiskAnalysis"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="RiskAnalysisPage" title="Risk Analysis" showNavButton="false" class="sapUiContentPadding">
+        <MessageStrip
+            text="Risk Analysis module is under construction. This view is wired into routing and ready for development."
+            type="Information"
+            showIcon="true"
+            class="sapUiMediumMarginBottom"/>
+    </Page>
+
+</mvc:View>

@@ -1,0 +1,44 @@
+{
+  "notifications": [
+    {
+      "notificationId": "N-3001", "userId": "U004", "type": "Approval", "priority": "High",
+      "title": "Approval required: AR-1024", "message": "Rohan Sharma's access request for role Z_FI_AP_CLERK is awaiting your approval.",
+      "relatedRequestId": "AR-1024", "timestamp": "2026-06-30T14:21:00", "read": false
+    },
+    {
+      "notificationId": "N-3002", "userId": "U008", "type": "Risk", "priority": "Critical",
+      "title": "SoD conflict detected: AR-1023", "message": "Request AR-1023 for Neha Gupta triggered SoD rule SOD-001 (Create vs Approve PO).",
+      "relatedRequestId": "AR-1023", "timestamp": "2026-06-30T10:11:00", "read": false
+    },
+    {
+      "notificationId": "N-3003", "userId": "U003", "type": "Approval", "priority": "Medium",
+      "title": "Approval required: AR-1022", "message": "Rahul Kapoor's role change request is awaiting Security Admin action.",
+      "relatedRequestId": "AR-1022", "timestamp": "2026-06-29T10:05:00", "read": true
+    },
+    {
+      "notificationId": "N-3004", "userId": "U001", "type": "Request", "priority": "Low",
+      "title": "Request submitted", "message": "Your access request AR-1024 was submitted and is in the approval workflow.",
+      "relatedRequestId": "AR-1024", "timestamp": "2026-06-30T14:20:30", "read": true
+    },
+    {
+      "notificationId": "N-3005", "userId": "U002", "type": "Request", "priority": "Medium",
+      "title": "Request approved", "message": "Your access request AR-1019 for Z_MM_VENDOR_MASTER has been approved and provisioned.",
+      "relatedRequestId": "AR-1019", "timestamp": "2026-06-30T09:05:00", "read": false
+    },
+    {
+      "notificationId": "N-3006", "userId": "U007", "type": "System", "priority": "High",
+      "title": "Emergency access granted", "message": "Firefighter access AR-1021 was granted to Amit Kumar for payment run recovery.",
+      "relatedRequestId": "AR-1021", "timestamp": "2026-06-27T22:41:00", "read": true
+    },
+    {
+      "notificationId": "N-3007", "userId": "U001", "type": "Request", "priority": "Medium",
+      "title": "Request rejected", "message": "Your access request AR-1017 was rejected due to unmitigated SoD conflicts.",
+      "relatedRequestId": "AR-1017", "timestamp": "2026-06-19T10:05:00", "read": true
+    },
+    {
+      "notificationId": "N-3008", "userId": "U008", "type": "Risk", "priority": "Medium",
+      "title": "New risk finding: RF-506", "message": "Anjali Verma was flagged for SoD rule SOD-005 during periodic recertification.",
+      "relatedRequestId": null, "timestamp": "2026-06-15T08:05:00", "read": false
+    }
+  ]
+}

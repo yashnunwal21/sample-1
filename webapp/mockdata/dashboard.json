@@ -1,0 +1,130 @@
+{
+  "kpis": [
+    {
+      "id": "kpi1",
+      "title": "Open Access Requests",
+      "value": 24,
+      "icon": "sap-icon://document-text",
+      "state": "Critical",
+      "trend": "Up"
+    },
+    {
+      "id": "kpi2",
+      "title": "Pending Approvals",
+      "value": 12,
+      "icon": "sap-icon://task",
+      "state": "Error",
+      "trend": "Up"
+    },
+    {
+      "id": "kpi3",
+      "title": "Open SoD Risks",
+      "value": 7,
+      "icon": "sap-icon://alert",
+      "state": "Error",
+      "trend": "Down"
+    },
+    {
+      "id": "kpi4",
+      "title": "Active Roles",
+      "value": 158,
+      "icon": "sap-icon://shield",
+      "state": "Good",
+      "trend": "None"
+    },
+    {
+      "id": "kpi5",
+      "title": "Mitigated Risks",
+      "value": 19,
+      "icon": "sap-icon://accept",
+      "state": "Good",
+      "trend": "Up"
+    },
+    {
+      "id": "kpi6",
+      "title": "Requests Completed (30d)",
+      "value": 86,
+      "icon": "sap-icon://complete",
+      "state": "Good",
+      "trend": "Up"
+    }
+  ],
+  "recentActivity": [
+    {
+      "id": "act1",
+      "type": "Request",
+      "text": "Access request AR-1024 submitted by Rohan Sharma",
+      "user": "Rohan Sharma",
+      "timestamp": "2026-06-30T14:20:00",
+      "icon": "sap-icon://document-text",
+      "status": "Pending"
+    },
+    {
+      "id": "act2",
+      "type": "Approval",
+      "text": "Role owner approved AR-1019 for Anjali Verma",
+      "user": "Anjali Verma",
+      "timestamp": "2026-06-30T11:05:00",
+      "icon": "sap-icon://task",
+      "status": "Approved"
+    },
+    {
+      "id": "act3",
+      "type": "Risk",
+      "text": "SoD risk SOD-034 flagged during simulation",
+      "user": "System",
+      "timestamp": "2026-06-29T17:40:00",
+      "icon": "sap-icon://alert",
+      "status": "Error"
+    },
+    {
+      "id": "act4",
+      "type": "Role",
+      "text": "Role Z_FI_AP_CLERK updated by Role Owner",
+      "user": "Priya Malhotra",
+      "timestamp": "2026-06-29T09:15:00",
+      "icon": "sap-icon://shield",
+      "status": "None"
+    },
+    {
+      "id": "act5",
+      "type": "Request",
+      "text": "Access request AR-1015 rejected by security admin",
+      "user": "Amit Kumar",
+      "timestamp": "2026-06-28T16:00:00",
+      "icon": "sap-icon://document-text",
+      "status": "Rejected"
+    },
+    {
+      "id": "act6",
+      "type": "Approval",
+      "text": "GRC admin approved mitigation control MC-011",
+      "user": "Kavita Mehra",
+      "timestamp": "2026-06-28T10:30:00",
+      "icon": "sap-icon://task",
+      "status": "Approved"
+    }
+  ],
+  "requestsByStatus": [
+    {
+      "status": "Draft",
+      "count": 5
+    },
+    {
+      "status": "Pending Approval",
+      "count": 12
+    },
+    {
+      "status": "Approved",
+      "count": 48
+    },
+    {
+      "status": "Rejected",
+      "count": 6
+    },
+    {
+      "status": "Provisioned",
+      "count": 31
+    }
+  ]
+}

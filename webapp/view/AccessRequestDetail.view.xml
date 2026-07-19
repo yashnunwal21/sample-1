@@ -1,0 +1,84 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.AccessRequestDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page id="AccessRequestDetailPage" title="Request Detail" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
+
+        <VBox id="detailContent">
+            <ObjectHeader
+                title="{detail>/requestNumber}"
+                number="{
+                    path: 'detail>/status',
+                    formatter: '.formatter.requestStatusText'
+                }"
+                numberState="{
+                    path: 'detail>/status',
+                    formatter: '.formatter.statusState'
+                }">
+                <attributes>
+                    <ObjectAttribute title="Requested For" text="{detail>/targetUserName}"/>
+                    <ObjectAttribute title="Role" text="{detail>/roleName}"/>
+                    <ObjectAttribute title="Approver" text="{detail>/approverName}"/>
+                </attributes>
+            </ObjectHeader>
+
+            <f:SimpleForm
+                id="detailForm"
+                editable="false"
+                layout="ResponsiveGridLayout"
+                labelSpanL="3" labelSpanM="3"
+                class="sapUiMediumMarginTop">
+
+                <Label text="Business Justification"/>
+                <Text text="{detail>/businessJustification}"/>
+
+                <Label text="Manager Comment" visible="{= !!${detail>/managerComment} }"/>
+                <Text text="{detail>/managerComment}" visible="{= !!${detail>/managerComment} }"/>
+
+                <Label text="Security Comment" visible="{= !!${detail>/securityComment} }"/>
+                <Text text="{detail>/securityComment}" visible="{= !!${detail>/securityComment} }"/>
+
+                <Label text="Created On"/>
+                <Text text="{path: 'detail>/createdOn', formatter: '.formatter.formatDateTime'}"/>
+
+                <Label text="Last Updated"/>
+                <Text text="{path: 'detail>/updatedOn', formatter: '.formatter.formatDateTime'}"/>
+            </f:SimpleForm>
+
+            <VBox id="managerActionArea" visible="{actionView>/showManagerActions}" class="sapUiMediumMarginTop">
+                <Title text="Manager Decision" level="H4" class="sapUiSmallMarginBottom"/>
+                <TextArea id="managerCommentInput" value="{actionView>/managerComment}" rows="2" width="100%" placeholder="Add a comment (optional)"/>
+                <HBox class="sapUiSmallMarginTop">
+                    <Button text="Approve" type="Accept" press="onManagerApprove" class="sapUiTinyMarginEnd"/>
+                    <Button text="Reject" type="Reject" press="onManagerReject"/>
+                </HBox>
+            </VBox>
+
+            <VBox id="securityActionArea" visible="{actionView>/showSecurityActions}" class="sapUiMediumMarginTop">
+                <Title text="Security Review Decision" level="H4" class="sapUiSmallMarginBottom"/>
+                <TextArea id="securityCommentInput" value="{actionView>/securityComment}" rows="2" width="100%" placeholder="Add a comment (optional)"/>
+                <HBox class="sapUiSmallMarginTop">
+                    <Button text="Approve" type="Accept" press="onSecurityApprove" class="sapUiTinyMarginEnd"/>
+                    <Button text="Reject" type="Reject" press="onSecurityReject"/>
+                </HBox>
+            </VBox>
+
+            <VBox id="completeActionArea" visible="{actionView>/showCompleteAction}" class="sapUiMediumMarginTop">
+                <Title text="Provisioning" level="H4" class="sapUiSmallMarginBottom"/>
+                <Text text="Approved and awaiting provisioning in the target system." class="sapUiTinyMarginBottom"/>
+                <TextArea id="completionCommentInput" value="{actionView>/completionComment}" rows="2" width="100%" placeholder="Add a completion note (optional)"/>
+                <Button text="Mark as Provisioned" type="Emphasized" press="onCompleteProvisioning" class="sapUiSmallMarginTop"/>
+            </VBox>
+
+            <VBox id="withdrawActionArea" visible="{actionView>/showWithdrawAction}" class="sapUiMediumMarginTop">
+                <Title text="Your Request" level="H4" class="sapUiSmallMarginBottom"/>
+                <Text text="You can withdraw this request while it is still awaiting manager approval." class="sapUiTinyMarginBottom"/>
+                <Button text="Withdraw Request" type="Reject" press="onWithdraw"/>
+            </VBox>
+        </VBox>
+
+    </Page>
+
+</mvc:View>

@@ -1,0 +1,59 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Popover
+        id="notificationsPopover"
+        title="Notifications"
+        placement="Bottom"
+        contentWidth="24rem"
+        contentHeight="28rem">
+
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button
+                    text="Mark all read"
+                    type="Transparent"
+                    enabled="{userNotifications>/hasUnread}"
+                    press=".onMarkAllRead"/>
+            </Toolbar>
+        </footer>
+
+        <content>
+            <List
+                id="notificationsList"
+                items="{userNotifications>/items}"
+                noDataText="No notifications"
+                mode="None">
+                <CustomListItem type="Active" press=".onNotificationItemPress">
+                    <HBox class="sapUiSmallMargin" alignItems="Start">
+                        <core:Icon
+                            src="{
+                                path: 'userNotifications>type',
+                                formatter: '.formatter.notificationIcon'
+                            }"
+                            size="1.25rem"
+                            class="sapUiTinyMarginEnd sapUiTinyMarginTop"
+                            color="{
+                                path: 'userNotifications>priority',
+                                formatter: '.formatter.priorityColor'
+                            }"/>
+                        <VBox>
+                            <Text text="{userNotifications>title}" class="grcNotificationTitle"/>
+                            <Text text="{userNotifications>message}" class="sapUiTinyMarginTop"/>
+                            <Text
+                                text="{
+                                    path: 'userNotifications>timestamp',
+                                    formatter: '.formatter.formatDateTime'
+                                }"
+                                class="sapUiTinyMarginTop"/>
+                        </VBox>
+                    </HBox>
+                </CustomListItem>
+            </List>
+        </content>
+
+    </Popover>
+
+</core:FragmentDefinition>

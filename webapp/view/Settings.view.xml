@@ -1,0 +1,57 @@
+﻿<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Settings"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="SettingsPage" title="Settings" showNavButton="false" class="sapUiContentPadding">
+
+        <Panel headerText="Access Request Form Configuration" class="sapUiMediumMarginBottom">
+            <Text
+                text="Read-only preview of the Business Area / Subcategory / Field configuration that drives the dynamic Access Request form. In a productive system, administrators maintain this metadata in backend configuration tables and the SAPUI5 app consumes it through OData."
+                class="sapUiSmallMargin"/>
+        </Panel>
+
+        <List id="businessAreaList" items="{configTree>/}" noDataText="No business areas configured">
+            <CustomListItem>
+                <Panel headerText="{configTree>name}" expandable="true" expanded="false" class="sapUiTinyMarginBottom">
+                    <Text text="{configTree>description}" class="sapUiSmallMarginBottom"/>
+
+                    <List items="{configTree>subcategories}" noDataText="No subcategories configured">
+                        <CustomListItem>
+                            <Panel headerText="{configTree>name}" expandable="true" expanded="false" class="sapUiTinyMarginBottom">
+                                <Text text="{configTree>description}" class="sapUiSmallMarginBottom"/>
+
+                                <Table items="{configTree>fields}" noDataText="No fields configured">
+                                    <columns>
+                                        <Column><Text text="Order"/></Column>
+                                        <Column><Text text="Field Label"/></Column>
+                                        <Column><Text text="Type"/></Column>
+                                        <Column><Text text="Mandatory"/></Column>
+                                        <Column><Text text="Help Text"/></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Text text="{configTree>sortOrder}"/>
+                                                <Text text="{configTree>label}"/>
+                                                <Text text="{configTree>fieldType}"/>
+                                                <ObjectStatus
+                                                    text="{
+                                                        path: 'configTree>mandatory',
+                                                        formatter: '.formatter.mandatoryText'
+                                                    }"
+                                                    state="{= ${configTree>mandatory} ? 'Warning' : 'None' }"/>
+                                                <Text text="{configTree>helpText}"/>
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </Panel>
+                        </CustomListItem>
+                    </List>
+                </Panel>
+            </CustomListItem>
+        </List>
+
+    </Page>
+</mvc:View>

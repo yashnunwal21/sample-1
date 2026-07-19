@@ -1,0 +1,44 @@
+{
+  "workflowSteps": [
+    { "stepId": "WF-1024-1", "requestId": "AR-1024", "stepOrder": 1, "approverRole": "Manager", "approverId": "U004", "approverName": "Priya Malhotra", "status": "Pending", "comments": null, "actionDate": null },
+    { "stepId": "WF-1024-2", "requestId": "AR-1024", "stepOrder": 2, "approverRole": "Role Owner", "approverId": "U004", "approverName": "Priya Malhotra", "status": "Not Started", "comments": null, "actionDate": null },
+    { "stepId": "WF-1024-3", "requestId": "AR-1024", "stepOrder": 3, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Not Started", "comments": null, "actionDate": null },
+
+    { "stepId": "WF-1023-1", "requestId": "AR-1023", "stepOrder": 1, "approverRole": "Manager", "approverId": "U006", "approverName": "Vikram Chaudhary", "status": "Approved", "comments": "Approved, short-term coverage.", "actionDate": "2026-06-30T12:00:00" },
+    { "stepId": "WF-1023-2", "requestId": "AR-1023", "stepOrder": 2, "approverRole": "Role Owner", "approverId": "U006", "approverName": "Vikram Chaudhary", "status": "Approved", "comments": "Owner approves for PO roles.", "actionDate": "2026-06-30T13:00:00" },
+    { "stepId": "WF-1023-3", "requestId": "AR-1023", "stepOrder": 3, "approverRole": "Risk Officer", "approverId": "U008", "approverName": "Tara Singh", "status": "Pending", "comments": null, "actionDate": null },
+    { "stepId": "WF-1023-4", "requestId": "AR-1023", "stepOrder": 4, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Not Started", "comments": null, "actionDate": null },
+
+    { "stepId": "WF-1022-1", "requestId": "AR-1022", "stepOrder": 1, "approverRole": "Manager", "approverId": "U004", "approverName": "Priya Malhotra", "status": "Approved", "comments": "Approved.", "actionDate": "2026-06-29T10:00:00" },
+    { "stepId": "WF-1022-2", "requestId": "AR-1022", "stepOrder": 2, "approverRole": "Role Owner", "approverId": "U004", "approverName": "Priya Malhotra", "status": "Pending", "comments": null, "actionDate": null },
+    { "stepId": "WF-1022-3", "requestId": "AR-1022", "stepOrder": 3, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Not Started", "comments": null, "actionDate": null },
+
+    { "stepId": "WF-1021-1", "requestId": "AR-1021", "stepOrder": 1, "approverRole": "GRC Admin", "approverId": "U007", "approverName": "Kavita Mehra", "status": "Approved", "comments": "Emergency access granted per firefighter procedure.", "actionDate": "2026-06-27T22:30:00" },
+    { "stepId": "WF-1021-2", "requestId": "AR-1021", "stepOrder": 2, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Approved", "comments": "Provisioned immediately, log review scheduled.", "actionDate": "2026-06-27T22:40:00" },
+
+    { "stepId": "WF-1020-1", "requestId": "AR-1020", "stepOrder": 1, "approverRole": "Manager", "approverId": "U003", "approverName": "Amit Kumar", "status": "Approved", "comments": "System account, approved with mitigation control applied.", "actionDate": "2026-06-25T09:00:00" },
+    { "stepId": "WF-1020-2", "requestId": "AR-1020", "stepOrder": 2, "approverRole": "Risk Officer", "approverId": "U008", "approverName": "Tara Singh", "status": "Approved", "comments": "Mitigation control MC-002 assigned.", "actionDate": "2026-06-25T14:00:00" },
+    { "stepId": "WF-1020-3", "requestId": "AR-1020", "stepOrder": 3, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Approved", "comments": "Provisioned.", "actionDate": "2026-06-26T09:00:00" },
+
+    { "stepId": "WF-1017-1", "requestId": "AR-1017", "stepOrder": 1, "approverRole": "Manager", "approverId": "U004", "approverName": "Priya Malhotra", "status": "Approved", "comments": "Approved by manager.", "actionDate": "2026-06-18T16:00:00" },
+    { "stepId": "WF-1017-2", "requestId": "AR-1017", "stepOrder": 2, "approverRole": "Risk Officer", "approverId": "U008", "approverName": "Tara Singh", "status": "Rejected", "comments": "Two unmitigated SoD conflicts, self-requested access.", "actionDate": "2026-06-19T09:00:00" },
+    { "stepId": "WF-1017-3", "requestId": "AR-1017", "stepOrder": 3, "approverRole": "Security Admin", "approverId": "U003", "approverName": "Amit Kumar", "status": "Rejected", "comments": "Rejected in line with Risk Officer finding.", "actionDate": "2026-06-19T10:00:00" }
+  ],
+  "workflowTemplates": [
+    {
+      "templateId": "WFT-STANDARD",
+      "name": "Standard Access Request",
+      "steps": ["Manager", "Role Owner", "Security Admin"]
+    },
+    {
+      "templateId": "WFT-RISK",
+      "name": "Access Request with SoD Conflict",
+      "steps": ["Manager", "Role Owner", "Risk Officer", "Security Admin"]
+    },
+    {
+      "templateId": "WFT-EMERGENCY",
+      "name": "Emergency / Firefighter Access",
+      "steps": ["GRC Admin", "Security Admin"]
+    }
+  ]
+}

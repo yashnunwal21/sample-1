@@ -1,0 +1,71 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.RoleDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page id="RoleDetailPage" title="Role Detail" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
+
+        <VBox id="roleDetailContent">
+            <ObjectHeader
+                title="{role>/roleName}"
+                number="{role>/status}"
+                numberState="{path: 'role>/status', formatter: '.formatter.statusState'}">
+                <attributes>
+                    <ObjectAttribute title="Description" text="{role>/description}"/>
+                    <ObjectAttribute title="Type" text="{role>/type}"/>
+                    <ObjectAttribute title="Business Process" text="{role>/businessProcess}"/>
+                    <ObjectAttribute title="Owner" text="{role>/ownerName}"/>
+                    <ObjectAttribute title="SAP System" text="{role>/sapSystem}"/>
+                    <ObjectAttribute title="Assigned Users" text="{role>/assignedUsersCount}"/>
+                    <ObjectAttribute title="Created On" text="{path: 'role>/createdOn', formatter: '.formatter.formatDateTime'}"/>
+                </attributes>
+                <statuses>
+                    <ObjectStatus
+                        title="Risk Level"
+                        text="{role>/riskLevel}"
+                        state="{path: 'role>/riskLevel', formatter: '.formatter.statusState'}"/>
+                </statuses>
+            </ObjectHeader>
+
+            <Panel headerText="Transaction Codes" class="sapUiMediumMarginTop">
+                <Table items="{role>/tcodes}" noDataText="No transaction codes configured">
+                    <columns>
+                        <Column><Text text="TCode"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{role>value}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+            <Panel headerText="Authorization Objects" class="sapUiMediumMarginTop">
+                <List items="{role>/authObjects}" showSeparators="None" noDataText="No authorization objects configured">
+                    <CustomListItem>
+                        <VBox class="sapUiSmallMarginBottom grcEnablerRow">
+                            <Title text="{role>objectId}" level="H5"/>
+                            <Text text="{role>description}" class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
+                            <Table items="{role>fields}" noDataText="No fields configured">
+                                <columns>
+                                    <Column><Text text="Authorization Field"/></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{role>value}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </CustomListItem>
+                </List>
+            </Panel>
+        </VBox>
+
+    </Page>
+
+</mvc:View>

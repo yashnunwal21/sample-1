@@ -1,0 +1,121 @@
+﻿<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Dashboard"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f">
+
+    <Page id="dashboardPage" title="Dashboard" showHeader="false" class="sapUiContentPadding">
+        <VBox class="grcRoleDashboard">
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom grcDashboardHeader">
+                <VBox>
+                    <Title text="Welcome back, {roleDashboard>/userName}" level="H2" class="sapUiTinyMarginBottom"/>
+                    <ObjectStatus text="{roleDashboard>/roleTitle}" state="Information"/>
+                    <Text text="{roleDashboard>/roleDescription}" class="sapUiTinyMarginTop"/>
+                </VBox>
+                <HBox>
+                    <Button
+                        text="New Request"
+                        icon="sap-icon://add-document"
+                        type="Emphasized"
+                        visible="{= ${roleDashboard>/roleType} !== 'SECURITY' }"
+                        press="onCreatePress"
+                        class="sapUiTinyMarginEnd"/>
+                    <Button
+                        text="Review Queue"
+                        icon="sap-icon://approvals"
+                        visible="{= ${roleDashboard>/roleType} !== 'EMPLOYEE' }"
+                        press="onQueuePress"/>
+                </HBox>
+            </HBox>
+
+            <f:GridContainer id="roleKpiGrid" items="{roleDashboard>/kpis}">
+                <f:layout>
+                    <f:GridContainerSettings rowSize="5rem" columnSize="10rem" gap="1rem"/>
+                </f:layout>
+                <f:items>
+                    <GenericTile
+                        header="{roleDashboard>title}"
+                        subheader="Role dashboard"
+                        press="onKpiPress"
+                        frameType="TwoByOne"
+                        class="sapUiTinyMarginEnd sapUiTinyMarginBottom">
+                        <TileContent footer="{roleDashboard>title}">
+                            <NumericContent
+                                value="{roleDashboard>value}"
+                                icon="{roleDashboard>icon}"
+                                valueColor="{roleDashboard>state}"
+                                indicator="{roleDashboard>trend}"
+                                withMargin="false"/>
+                        </TileContent>
+                    </GenericTile>
+                </f:items>
+            </f:GridContainer>
+
+            <HBox class="sapUiLargeMarginTop grcDashboardColumns" alignItems="Start">
+                <VBox width="62%" class="sapUiMediumMarginEnd">
+                    <List
+                        items="{roleDashboard>/sections}"
+                        showSeparators="None"
+                        noDataText="No dashboard sections available">
+                        <CustomListItem>
+                            <Panel headerText="{roleDashboard>title}" class="sapUiSmallMarginBottom">
+                                <List items="{roleDashboard>rows}" noDataText="No data">
+                                    <CustomListItem>
+                                        <HBox class="sapUiTinyMargin grcStatusRow" alignItems="Center" justifyContent="SpaceBetween">
+                                            <Text text="{roleDashboard>label}"/>
+                                            <ObjectStatus text="{roleDashboard>value}" state="{roleDashboard>state}"/>
+                                        </HBox>
+                                    </CustomListItem>
+                                </List>
+                            </Panel>
+                        </CustomListItem>
+                    </List>
+                </VBox>
+
+                <VBox width="38%">
+                    <Panel headerText="My Requests" visible="{= ${roleDashboard>/roleType} === 'EMPLOYEE' }">
+                        <List
+                            items="{roleDashboard>/myRequests}"
+                            noDataText="You haven't submitted any requests yet">
+                            <StandardListItem
+                                title="{roleDashboard>title}"
+                                description="{roleDashboard>description}"
+                                icon="sap-icon://request"
+                                info="{
+                                    path: 'roleDashboard>status',
+                                    formatter: '.formatter.requestStatusText'
+                                }"
+                                infoState="{
+                                    path: 'roleDashboard>status',
+                                    formatter: '.formatter.statusState'
+                                }"
+                                type="Navigation"
+                                press="onRecentRequestPress"/>
+                        </List>
+                    </Panel>
+
+                    <Panel headerText="Recent Requests" visible="{= ${roleDashboard>/roleType} !== 'EMPLOYEE' }">
+                        <List
+                            items="{roleDashboard>/recentRequests}"
+                            noDataText="No recent requests">
+                            <StandardListItem
+                                title="{roleDashboard>title}"
+                                description="{roleDashboard>description}"
+                                icon="sap-icon://request"
+                                info="{
+                                    path: 'roleDashboard>status',
+                                    formatter: '.formatter.requestStatusText'
+                                }"
+                                infoState="{
+                                    path: 'roleDashboard>status',
+                                    formatter: '.formatter.statusState'
+                                }"
+                                type="Navigation"
+                                press="onRecentRequestPress"/>
+                        </List>
+                    </Panel>
+                </VBox>
+            </HBox>
+        </VBox>
+    </Page>
+</mvc:View>
