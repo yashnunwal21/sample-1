@@ -55,6 +55,7 @@ sap.ui.define([
         onInit() {
             const oFormViewModel = new JSONModel({
                 businessAreas: [],
+                availableRoles: [],
                 currentEmployee: null,
                 dynamicFields: [],
                 employeeIdInput: "",
@@ -68,10 +69,15 @@ sap.ui.define([
                 requesterType: "MSIL",
                 selectedBusinessAreaDescription: "",
                 selectedBusinessAreaId: "",
+                selectedRoleDescription: "",
+                selectedRoleId: "",
+                selectedRoleName: "",
                 selectedSubcategoryDescription: "",
                 selectedSubcategoryId: "",
+                showConfigurationSteps: true,
                 subcategories: [],
-                targetEmployee: null
+                targetEmployee: null,
+                targetSummary: ""
             });
             this.getView().setModel(oFormViewModel, "formView");
 
@@ -81,8 +87,11 @@ sap.ui.define([
                     employeeId: oCurrentUser.employeeId,
                     fullName: oCurrentUser.fullName,
                     department: oCurrentUser.department,
+                    designation: oCurrentUser.jobTitle,
+                    employmentType: "MSIL",
                     plant: oCurrentUser.plant
                 });
+                oFormViewModel.setProperty("/targetSummary", `${oCurrentUser.employeeId} - ${oCurrentUser.fullName} | ${oCurrentUser.department} | MSIL`);
             }
 
             const oFormConfigModel = this._getModel("formConfig");
@@ -123,6 +132,90 @@ sap.ui.define([
         },
 
         /**
+         * Returns true once the request target section has enough information.
+         * @returns {boolean} Whether employee details are complete.
+         */
+        _isEmployeeStepComplete() {
+            const oFormViewModel = this._getFormViewModel();
+            const sRequesterType = oFormViewModel.getProperty("/requesterType");
+
+            if (sRequesterType === "MSIL") {
+                return oFormViewModel.getProperty("/forSelfIndex") === 0 || !!oFormViewModel.getProperty("/targetEmployee");
+            }
+
+            return !!(
+                (oFormViewModel.getProperty("/outsiderName") || "").trim() &&
+                (oFormViewModel.getProperty("/outsiderOrganization") || "").trim() &&
+                (oFormViewModel.getProperty("/outsiderEmail") || "").trim() &&
+                (oFormViewModel.getProperty("/outsiderMobile") || "").trim() &&
+                (oFormViewModel.getProperty("/outsiderPurpose") || "").trim()
+            );
+        },
+
+        /**
+         * Refreshes the target summary and enables the next request steps.
+         * @returns {void}
+         */
+        _updateStepState() {
+            const oFormViewModel = this._getFormViewModel();
+            const sRequesterType = oFormViewModel.getProperty("/requesterType");
+            let sTargetSummary = "";
+
+            if (sRequesterType === "MSIL" && oFormViewModel.getProperty("/forSelfIndex") === 0) {
+                const oEmployee = oFormViewModel.getProperty("/currentEmployee");
+                if (oEmployee) {
+                    sTargetSummary = `${oEmployee.employeeId} - ${oEmployee.fullName} | ${oEmployee.department} | MSIL`;
+                }
+            } else if (sRequesterType === "MSIL") {
+                const oEmployee = oFormViewModel.getProperty("/targetEmployee");
+                if (oEmployee) {
+                    sTargetSummary = `${oEmployee.employeeId} - ${oEmployee.fullName} | ${oEmployee.department} | MSIL`;
+                }
+            } else if (this._isEmployeeStepComplete()) {
+                sTargetSummary = `${oFormViewModel.getProperty("/outsiderName")} | ${oFormViewModel.getProperty("/outsiderOrganization")} | External`;
+            }
+
+            oFormViewModel.setProperty("/showConfigurationSteps", this._isEmployeeStepComplete());
+            oFormViewModel.setProperty("/targetSummary", sTargetSummary);
+        },
+
+        /**
+         * Clears role and enabler selections when an earlier step changes.
+         * @returns {void}
+         */
+        _resetRoleAndFields() {
+            const oFormViewModel = this._getFormViewModel();
+            oFormViewModel.setProperty("/availableRoles", []);
+            oFormViewModel.setProperty("/selectedRoleDescription", "");
+            oFormViewModel.setProperty("/selectedRoleId", "");
+            oFormViewModel.setProperty("/selectedRoleName", "");
+            oFormViewModel.setProperty("/dynamicFields", []);
+            this._clearDynamicFields();
+        },
+
+        /**
+         * Loads SAP catalog roles configured for the selected subcategory.
+         * @param {string} sSubcategoryId Selected subcategory id.
+         * @returns {void}
+         */
+        _loadRolesForSubcategory(sSubcategoryId) {
+            const oFormConfigModel = this._getModel("formConfig");
+            const oRolesModel = this._getModel("roles");
+
+            oRolesModel.dataLoaded().then(() => {
+                const aMappings = oFormConfigModel.getProperty("/subcategoryRoleConfig") || [];
+                const aRoles = oRolesModel.getProperty("/roles") || [];
+                const aAvailableRoles = aMappings
+                    .filter((oMapping) => oMapping.subcategoryId === sSubcategoryId && oMapping.active)
+                    .sort((oFirst, oSecond) => oFirst.sortOrder - oSecond.sortOrder)
+                    .map((oMapping) => aRoles.find((oRole) => oRole.roleId === oMapping.roleId))
+                    .filter(Boolean);
+
+                this._getFormViewModel().setProperty("/availableRoles", aAvailableRoles);
+            });
+        },
+
+        /**
          * Resets requester-specific fields when the requester type changes,
          * so stale lookups or outsider details don't leak between the two flows.
          * @returns {void}
@@ -138,6 +231,8 @@ sap.ui.define([
             oFormViewModel.setProperty("/outsiderEmail", "");
             oFormViewModel.setProperty("/outsiderMobile", "");
             oFormViewModel.setProperty("/outsiderPurpose", "");
+            this._resetRoleAndFields();
+            this._updateStepState();
         },
 
         /**
@@ -172,8 +267,20 @@ sap.ui.define([
                 fullName: oEmployee.fullName,
                 department: oEmployee.department,
                 plant: oEmployee.plant,
+                designation: oEmployee.jobTitle,
+                employmentType: "MSIL",
                 managerName: oEmployee.managerName
             });
+            this._updateStepState();
+        },
+
+        /**
+         * Updates step completion while typing outsider details or changing self/other selection.
+         * @returns {void}
+         */
+        onRequesterDetailsChange() {
+            this._resetRoleAndFields();
+            this._updateStepState();
         },
 
         /**
@@ -331,8 +438,7 @@ sap.ui.define([
             oFormViewModel.setProperty("/selectedBusinessAreaId", sBusinessAreaId);
             oFormViewModel.setProperty("/selectedSubcategoryId", "");
             oFormViewModel.setProperty("/selectedSubcategoryDescription", "");
-            oFormViewModel.setProperty("/dynamicFields", []);
-            this._clearDynamicFields();
+            this._resetRoleAndFields();
 
             if (!oBusinessArea) {
                 oFormViewModel.setProperty("/selectedBusinessAreaDescription", "");
@@ -359,16 +465,33 @@ sap.ui.define([
             const oSubcategory = FormConfigService.findSubcategory(this._aConfigTree, sSubcategoryId);
 
             oFormViewModel.setProperty("/selectedSubcategoryId", sSubcategoryId);
+            this._resetRoleAndFields();
 
             if (!oSubcategory) {
                 oFormViewModel.setProperty("/selectedSubcategoryDescription", "");
-                oFormViewModel.setProperty("/dynamicFields", []);
-                this._clearDynamicFields();
                 return;
             }
 
             oFormViewModel.setProperty("/selectedSubcategoryDescription", oSubcategory.description);
-            oFormViewModel.setProperty("/dynamicFields", this._cloneFieldsWithInitialValues(oSubcategory.fields));
+            this._loadRolesForSubcategory(sSubcategoryId);
+        },
+
+        /**
+         * Handles role selection and enables role enabler fields.
+         * @param {sap.ui.base.Event} oEvent Select change event.
+         * @returns {void}
+         */
+        onRoleChange(oEvent) {
+            const sRoleId = oEvent.getParameter("selectedItem")?.getKey() || "";
+            const oFormViewModel = this._getFormViewModel();
+            const aRoles = oFormViewModel.getProperty("/availableRoles") || [];
+            const oRole = aRoles.find((oItem) => oItem.roleId === sRoleId);
+            const oSubcategory = FormConfigService.findSubcategory(this._aConfigTree, oFormViewModel.getProperty("/selectedSubcategoryId"));
+
+            oFormViewModel.setProperty("/selectedRoleId", sRoleId);
+            oFormViewModel.setProperty("/selectedRoleName", oRole?.roleName || "");
+            oFormViewModel.setProperty("/selectedRoleDescription", oRole?.description || "");
+            oFormViewModel.setProperty("/dynamicFields", oRole && oSubcategory ? this._cloneFieldsWithInitialValues(oSubcategory.fields) : []);
             this._renderDynamicFields();
         },
 
@@ -388,11 +511,11 @@ sap.ui.define([
         },
 
         /**
-         * Navigates back to the access request list.
+         * Navigates back to the dashboard.
          * @returns {void}
          */
         onNavBack() {
-            this.getOwnerComponent().getRouter().navTo("requestList");
+            this.getOwnerComponent().getRouter().navTo("dashboard");
         },
 
         /**
@@ -448,6 +571,8 @@ sap.ui.define([
                         fullName: oCurrentUser.fullName,
                         employeeId: oCurrentUser.employeeId,
                         department: oCurrentUser.department,
+                        designation: oCurrentUser.jobTitle,
+                        employmentType: "MSIL",
                         plant: oCurrentUser.plant
                     };
                 }
@@ -503,6 +628,9 @@ sap.ui.define([
 
             const sBusinessAreaId = oFormViewModel.getProperty("/selectedBusinessAreaId");
             const sSubcategoryId = oFormViewModel.getProperty("/selectedSubcategoryId");
+            const sRoleId = oFormViewModel.getProperty("/selectedRoleId");
+            const aAvailableRoles = oFormViewModel.getProperty("/availableRoles") || [];
+            const oSelectedRole = aAvailableRoles.find((oRole) => oRole.roleId === sRoleId);
             const oSubcategory = FormConfigService.findSubcategory(this._aConfigTree, sSubcategoryId);
 
             if (!sBusinessAreaId) {
@@ -512,6 +640,11 @@ sap.ui.define([
 
             if (!sSubcategoryId || !oSubcategory) {
                 MessageToast.show("Please select a subcategory.");
+                return;
+            }
+
+            if (!oSelectedRole) {
+                MessageToast.show("Please select a SAP role.");
                 return;
             }
 
@@ -535,7 +668,7 @@ sap.ui.define([
                 selectedEnablers: [{
                     businessAreaId: sBusinessAreaId,
                     businessAreaName: sBusinessAreaName,
-                    enablerId: sSubcategoryId,
+                    enablerId: sRoleId,
                     fields: oResult.fields.map(({ fieldId, fieldType, label, mandatory, value }) => ({
                         fieldId,
                         fieldType,
@@ -543,8 +676,10 @@ sap.ui.define([
                         mandatory,
                         value
                     })),
-                    name: `${sBusinessAreaName} - ${sSubcategoryName}`,
-                    riskLevel: "Configured",
+                    name: oSelectedRole.roleName,
+                    roleDescription: oSelectedRole.description,
+                    roleId: oSelectedRole.roleId,
+                    riskLevel: oSelectedRole.riskLevel || "Configured",
                     subcategoryId: sSubcategoryId,
                     subcategoryName: sSubcategoryName
                 }]
@@ -557,7 +692,7 @@ sap.ui.define([
                 `Request ${sRequestNumber} submitted for ${oTarget.fullName}` +
                 `${oNewRequest.approverName ? ` and routed to ${oNewRequest.approverName} for approval.` : "."}`,
                 {
-                    onClose: () => this.getOwnerComponent().getRouter().navTo("requestList")
+                    onClose: () => this.getOwnerComponent().getRouter().navTo("dashboard")
                 }
             );
         }

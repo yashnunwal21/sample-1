@@ -52,4 +52,24 @@
     { "subcategoryId": "QM_INSPECT", "fieldId": "PLANT", "mandatory": true, "sortOrder": 1, "active": true }, { "subcategoryId": "QM_INSPECT", "fieldId": "STORAGE_LOCATION", "mandatory": false, "sortOrder": 2, "active": true }, { "subcategoryId": "QM_INSPECT", "fieldId": "REASON", "mandatory": true, "sortOrder": 3, "active": true },
     { "subcategoryId": "WH_INV", "fieldId": "PLANT", "mandatory": true, "sortOrder": 1, "active": true }, { "subcategoryId": "WH_INV", "fieldId": "STORAGE_LOCATION", "mandatory": true, "sortOrder": 2, "active": true }, { "subcategoryId": "WH_INV", "fieldId": "REASON", "mandatory": true, "sortOrder": 3, "active": true }
   ]
+,
+  "subcategoryRoleConfig": [
+    { "subcategoryId": "FIN_AP", "roleId": "R005", "sortOrder": 1, "active": true },
+    { "subcategoryId": "FIN_AP", "roleId": "R006", "sortOrder": 2, "active": true },
+    { "subcategoryId": "FIN_AR", "roleId": "R004", "sortOrder": 1, "active": true },
+    { "subcategoryId": "FIN_GL", "roleId": "R004", "sortOrder": 1, "active": true },
+    { "subcategoryId": "FIN_AA", "roleId": "R004", "sortOrder": 1, "active": true },
+    { "subcategoryId": "FIN_CO", "roleId": "R004", "sortOrder": 1, "active": true },
+    { "subcategoryId": "PROC_PO", "roleId": "R001", "sortOrder": 1, "active": true },
+    { "subcategoryId": "PROC_PO", "roleId": "R002", "sortOrder": 2, "active": true },
+    { "subcategoryId": "PROC_PO", "roleId": "R003", "sortOrder": 3, "active": true },
+    { "subcategoryId": "PROC_GR", "roleId": "R010", "sortOrder": 1, "active": true },
+    { "subcategoryId": "HR_EMP", "roleId": "R007", "sortOrder": 1, "active": true },
+    { "subcategoryId": "HR_PAY", "roleId": "R007", "sortOrder": 1, "active": true },
+    { "subcategoryId": "SALES_SO", "roleId": "R001", "sortOrder": 1, "active": true },
+    { "subcategoryId": "SALES_BILL", "roleId": "R004", "sortOrder": 1, "active": true },
+    { "subcategoryId": "MFG_PROD", "roleId": "R010", "sortOrder": 1, "active": true },
+    { "subcategoryId": "QM_INSPECT", "roleId": "R010", "sortOrder": 1, "active": true },
+    { "subcategoryId": "WH_INV", "roleId": "R010", "sortOrder": 1, "active": true }
+  ]
 }

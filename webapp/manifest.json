@@ -84,6 +84,7 @@
         { "name": "approvals", "pattern": "approvals", "target": ["approvals"] },
         { "name": "roles", "pattern": "roles", "target": ["roles"] },
         { "name": "roleDetail", "pattern": "roles/{roleId}", "target": ["roleDetail"] },
+        { "name": "helpRequests", "pattern": "help-requests", "target": ["helpRequests"] },
         { "name": "riskAnalysis", "pattern": "risk-analysis", "target": ["riskAnalysis"] },
         { "name": "reports", "pattern": "reports", "target": ["reports"] },
         { "name": "settings", "pattern": "settings", "target": ["settings"] }
@@ -97,6 +98,7 @@
         "approvals": { "id": "approvals", "name": "Approvals" },
         "roles": { "id": "roles", "name": "Roles" },
         "roleDetail": { "id": "roleDetail", "name": "RoleDetail" },
+        "helpRequests": { "id": "helpRequests", "name": "HelpRequest" },
         "riskAnalysis": { "id": "riskAnalysis", "name": "RiskAnalysis" },
         "reports": { "id": "reports", "name": "Reports" },
         "settings": { "id": "settings", "name": "Settings" }

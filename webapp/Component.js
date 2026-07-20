@@ -9,6 +9,7 @@ sap.ui.define([
         accessRequests: "/accessRequests.json",
         dashboard: "/dashboard.json",
         formConfig: "/formConfig.json",
+        helpRequests: "/helpRequests.json",
         notifications: "/notifications.json",
         riskRules: "/riskRules.json",
         roles: "/roles.json",

@@ -12,8 +12,9 @@ sap.ui.define([
     const KEY_TO_ROUTE = {
         approvals: "approvals",
         dashboard: "dashboard",
+        help: "helpRequests",
         reports: "reports",
-        requests: "requestList",
+        requests: "requestCreate",
         risk: "riskAnalysis",
         roles: "roles",
         settings: "settings"
@@ -21,6 +22,7 @@ sap.ui.define([
     const ROUTE_TO_KEY = {
         approvals: "approvals",
         dashboard: "dashboard",
+        helpRequests: "help",
         reports: "reports",
         requestCreate: "requests",
         requestDetail: "requests",

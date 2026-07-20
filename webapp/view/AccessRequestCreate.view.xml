@@ -1,4 +1,4 @@
-﻿<mvc:View
+<mvc:View
     controllerName="com.sap.grc.sapgrcaccessmanagement.controller.AccessRequestCreate"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:core="sap.ui.core"
@@ -7,111 +7,133 @@
 
     <Page id="AccessRequestCreatePage" title="Create Access Request" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
         <VBox class="grcRequestCreate">
-            <Title text="Access Request" level="H3" class="sapUiTinyMarginBottom"/>
-            <Text text="Tell us who this request is for, then select a business area and subcategory." class="sapUiMediumMarginBottom"/>
+            <Title text="New Access Request" level="H3" class="sapUiTinyMarginBottom"/>
+            <Text text="Complete the request from employee details through role enablers before submitting." class="sapUiMediumMarginBottom"/>
 
-            <Title text="Who is this request for?" level="H4" class="sapUiTinyMarginBottom"/>
-            <SegmentedButton id="requesterTypeButton" selectedKey="{formView>/requesterType}" select="onRequesterTypeChange" class="sapUiSmallMarginBottom">
-                <items>
-                    <SegmentedButtonItem key="MSIL" text="MSIL Employee"/>
-                    <SegmentedButtonItem key="OUTSIDER" text="Outsider / Non-MSIL User"/>
-                </items>
-            </SegmentedButton>
+            <Panel headerText="1. Employee Details" class="sapUiMediumMarginBottom">
+                <SegmentedButton id="requesterTypeButton" selectedKey="{formView>/requesterType}" select="onRequesterTypeChange" class="sapUiSmallMarginBottom">
+                    <items>
+                        <SegmentedButtonItem key="MSIL" text="MSIL Employee"/>
+                        <SegmentedButtonItem key="OUTSIDER" text="External / Non-MSIL"/>
+                    </items>
+                </SegmentedButton>
 
-            <VBox visible="{= ${formView>/requesterType} === 'MSIL' }" class="sapUiMediumMarginBottom">
-                <RadioButtonGroup id="forSelfGroup" selectedIndex="{formView>/forSelfIndex}" columns="2" class="sapUiTinyMarginBottom">
-                    <buttons>
-                        <RadioButton text="For Yourself"/>
-                        <RadioButton text="For Another MSIL Employee"/>
-                    </buttons>
-                </RadioButtonGroup>
+                <VBox visible="{= ${formView>/requesterType} === 'MSIL' }">
+                    <RadioButtonGroup
+                        id="forSelfGroup"
+                        selectedIndex="{formView>/forSelfIndex}"
+                        select="onRequesterDetailsChange"
+                        columns="2"
+                        class="sapUiTinyMarginBottom">
+                        <buttons>
+                            <RadioButton text="Self"/>
+                            <RadioButton text="Another Employee"/>
+                        </buttons>
+                    </RadioButtonGroup>
 
-                <Panel headerText="Employee Details" visible="{= ${formView>/forSelfIndex} === 0 }">
-                    <Text text="Employee ID: {formView>/currentEmployee/employeeId}"/>
-                    <Text text="Name: {formView>/currentEmployee/fullName}"/>
-                    <Text text="Department: {formView>/currentEmployee/department}"/>
-                    <Text text="Plant: {formView>/currentEmployee/plant}"/>
-                </Panel>
+                    <f:SimpleForm
+                        editable="false"
+                        layout="ResponsiveGridLayout"
+                        labelSpanXL="3"
+                        labelSpanL="3"
+                        labelSpanM="4"
+                        labelSpanS="12"
+                        columnsXL="2"
+                        columnsL="2"
+                        columnsM="1"
+                        visible="{= ${formView>/forSelfIndex} === 0 }">
+                        <Label text="Employee ID"/>
+                        <Text text="{formView>/currentEmployee/employeeId}"/>
+                        <Label text="Employee Name"/>
+                        <Text text="{formView>/currentEmployee/fullName}"/>
+                        <Label text="Department"/>
+                        <Text text="{formView>/currentEmployee/department}"/>
+                        <Label text="Designation"/>
+                        <Text text="{formView>/currentEmployee/designation}"/>
+                        <Label text="Employment Type"/>
+                        <ObjectStatus text="{formView>/currentEmployee/employmentType}" state="Information"/>
+                    </f:SimpleForm>
 
-                <VBox visible="{= ${formView>/forSelfIndex} === 1 }">
-                    <Label text="MSIL Employee ID" required="true"/>
-                    <HBox class="sapUiTinyMarginBottom">
-                        <Input
-                            id="employeeIdInput"
-                            value="{formView>/employeeIdInput}"
-                            maxLength="6"
-                            width="10rem"
-                            placeholder="6-digit ID"
-                            class="sapUiTinyMarginEnd"/>
-                        <Button text="Look Up" press="onEmployeeLookup"/>
-                    </HBox>
-                    <MessageStrip
-                        text="{formView>/employeeLookupError}"
-                        type="Error"
-                        showIcon="true"
-                        visible="{= !!${formView>/employeeLookupError} }"
-                        class="sapUiTinyMarginBottom"/>
-                    <Panel headerText="Employee Found" visible="{= !!${formView>/targetEmployee} }">
-                        <Text text="Name: {formView>/targetEmployee/fullName}"/>
-                        <Text text="Department: {formView>/targetEmployee/department}"/>
-                        <Text text="Plant: {formView>/targetEmployee/plant}"/>
-                        <Text text="Manager: {formView>/targetEmployee/managerName}"/>
-                    </Panel>
+                    <VBox visible="{= ${formView>/forSelfIndex} === 1 }">
+                        <Label text="Employee ID" required="true"/>
+                        <HBox class="sapUiTinyMarginBottom">
+                            <Input
+                                id="employeeIdInput"
+                                value="{formView>/employeeIdInput}"
+                                maxLength="6"
+                                width="10rem"
+                                placeholder="6-digit ID"
+                                class="sapUiTinyMarginEnd"/>
+                            <Button text="Search Employee" press="onEmployeeLookup"/>
+                        </HBox>
+                        <MessageStrip
+                            text="{formView>/employeeLookupError}"
+                            type="Error"
+                            showIcon="true"
+                            visible="{= !!${formView>/employeeLookupError} }"
+                            class="sapUiTinyMarginBottom"/>
+                        <f:SimpleForm
+                            editable="false"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="3"
+                            labelSpanL="3"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            columnsXL="2"
+                            columnsL="2"
+                            columnsM="1"
+                            visible="{= !!${formView>/targetEmployee} }">
+                            <Label text="Employee ID"/>
+                            <Text text="{formView>/targetEmployee/employeeId}"/>
+                            <Label text="Employee Name"/>
+                            <Text text="{formView>/targetEmployee/fullName}"/>
+                            <Label text="Department"/>
+                            <Text text="{formView>/targetEmployee/department}"/>
+                            <Label text="Designation"/>
+                            <Text text="{formView>/targetEmployee/designation}"/>
+                            <Label text="Employment Type"/>
+                            <ObjectStatus text="{formView>/targetEmployee/employmentType}" state="Information"/>
+                            <Label text="Manager"/>
+                            <Text text="{formView>/targetEmployee/managerName}"/>
+                        </f:SimpleForm>
+                    </VBox>
                 </VBox>
-            </VBox>
 
-            <f:SimpleForm
-                id="outsiderForm"
-                editable="true"
-                layout="ResponsiveGridLayout"
-                labelSpanXL="3"
-                labelSpanL="3"
-                labelSpanM="4"
-                labelSpanS="12"
-                adjustLabelSpan="false"
-                emptySpanXL="1"
-                emptySpanL="1"
-                emptySpanM="0"
-                columnsXL="2"
-                columnsL="2"
-                columnsM="1"
-                visible="{= ${formView>/requesterType} === 'OUTSIDER' }"
-                class="sapUiMediumMarginBottom">
+                <f:SimpleForm
+                    id="outsiderForm"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1"
+                    visible="{= ${formView>/requesterType} === 'OUTSIDER' }">
+                    <Label text="Full Name" required="true"/>
+                    <Input value="{formView>/outsiderName}" liveChange="onRequesterDetailsChange"/>
+                    <Label text="Organization / Company" required="true"/>
+                    <Input value="{formView>/outsiderOrganization}" liveChange="onRequesterDetailsChange"/>
+                    <Label text="Email" required="true"/>
+                    <Input value="{formView>/outsiderEmail}" type="Email" liveChange="onRequesterDetailsChange"/>
+                    <Label text="Mobile Number" required="true"/>
+                    <Input value="{formView>/outsiderMobile}" type="Tel" liveChange="onRequesterDetailsChange"/>
+                    <Label text="Purpose of Access" required="true"/>
+                    <TextArea value="{formView>/outsiderPurpose}" rows="2" width="100%" liveChange="onRequesterDetailsChange"/>
+                </f:SimpleForm>
+            </Panel>
 
-                <Label text="Full Name" required="true"/>
-                <Input value="{formView>/outsiderName}"/>
+            <MessageStrip
+                text="Selected for: {formView>/targetSummary}"
+                type="Information"
+                showIcon="true"
+                visible="{= !!${formView>/targetSummary} }"
+                class="sapUiMediumMarginBottom"/>
 
-                <Label text="Organization / Company" required="true"/>
-                <Input value="{formView>/outsiderOrganization}"/>
-
-                <Label text="Email" required="true"/>
-                <Input value="{formView>/outsiderEmail}" type="Email"/>
-
-                <Label text="Mobile Number" required="true"/>
-                <Input value="{formView>/outsiderMobile}" type="Tel"/>
-
-                <Label text="Purpose of Access" required="true"/>
-                <TextArea value="{formView>/outsiderPurpose}" rows="2" width="100%"/>
-            </f:SimpleForm>
-
-            <f:SimpleForm
-                id="requestSelectorForm"
-                editable="true"
-                layout="ResponsiveGridLayout"
-                labelSpanXL="3"
-                labelSpanL="3"
-                labelSpanM="4"
-                labelSpanS="12"
-                adjustLabelSpan="false"
-                emptySpanXL="1"
-                emptySpanL="1"
-                emptySpanM="0"
-                columnsXL="2"
-                columnsL="2"
-                columnsM="1">
-
-                <Label text="Business Area" required="true"/>
+            <Panel headerText="2. Business Area" class="sapUiMediumMarginBottom" visible="{formView>/showConfigurationSteps}">
                 <VBox>
+                    <Label text="Business Area" required="true"/>
                     <Select
                         id="businessAreaSelect"
                         width="100%"
@@ -123,9 +145,11 @@
                     </Select>
                     <Text text="{formView>/selectedBusinessAreaDescription}" class="grcFieldHelp sapUiTinyMarginTop"/>
                 </VBox>
+            </Panel>
 
-                <Label text="Subcategory" required="true" visible="{= !!${formView>/selectedBusinessAreaId} }"/>
-                <VBox visible="{= !!${formView>/selectedBusinessAreaId} }">
+            <Panel headerText="3. Subcategory" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedBusinessAreaId} }">
+                <VBox>
+                    <Label text="Subcategory" required="true"/>
                     <Select
                         id="subcategorySelect"
                         width="100%"
@@ -137,14 +161,37 @@
                     </Select>
                     <Text text="{formView>/selectedSubcategoryDescription}" class="grcFieldHelp sapUiTinyMarginTop"/>
                 </VBox>
-            </f:SimpleForm>
+            </Panel>
+
+            <Panel headerText="4. Role Selection" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedSubcategoryId} }">
+                <VBox>
+                    <Label text="SAP Role" required="true"/>
+                    <Select
+                        id="roleSelect"
+                        width="100%"
+                        forceSelection="false"
+                        selectedKey="{formView>/selectedRoleId}"
+                        change="onRoleChange"
+                        items="{formView>/availableRoles}">
+                        <core:Item key="{formView>roleId}" text="{formView>roleName}"/>
+                    </Select>
+                    <Text text="{formView>/selectedRoleDescription}" class="grcFieldHelp sapUiTinyMarginTop"/>
+                </VBox>
+            </Panel>
 
             <Panel
                 id="requestDetailsPanel"
-                headerText="Request Details"
-                visible="{= !!${formView>/selectedSubcategoryId} }"
-                class="sapUiMediumMarginTop">
-                <VBox id="dynamicFieldsBox" class="grcDynamicFieldList"/>
+                headerText="5. Role Enablers"
+                visible="{= !!${formView>/selectedRoleId} }"
+                class="sapUiMediumMarginBottom">
+                <VBox>
+                    <Text text="Complete the role-specific fields for {formView>/selectedRoleName}." class="sapUiSmallMarginBottom"/>
+                    <VBox id="dynamicFieldsBox" class="grcDynamicFieldList"/>
+                </VBox>
+            </Panel>
+
+            <Panel headerText="6. Review &amp; Submit" visible="{= !!${formView>/selectedRoleId} }">
+                <Text text="Review the selected employee, business area, subcategory, role, and enabler values before submitting."/>
             </Panel>
         </VBox>
 
@@ -152,7 +199,7 @@
             <Toolbar>
                 <ToolbarSpacer/>
                 <Button text="Cancel" press="onNavBack"/>
-                <Button text="Submit Request" type="Emphasized" press="onSubmit"/>
+                <Button text="Submit Request" type="Emphasized" press="onSubmit" enabled="{= !!${formView>/selectedRoleId} }"/>
             </Toolbar>
         </footer>
     </Page>

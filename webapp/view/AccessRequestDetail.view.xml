@@ -6,46 +6,122 @@
 
     <Page id="AccessRequestDetailPage" title="Request Detail" showNavButton="true" navButtonPress="onNavBack" class="sapUiContentPadding">
 
-        <VBox id="detailContent">
-            <ObjectHeader
-                title="{detail>/requestNumber}"
-                number="{
-                    path: 'detail>/status',
-                    formatter: '.formatter.requestStatusText'
-                }"
-                numberState="{
-                    path: 'detail>/status',
-                    formatter: '.formatter.statusState'
-                }">
-                <attributes>
-                    <ObjectAttribute title="Requested For" text="{detail>/targetUserName}"/>
-                    <ObjectAttribute title="Role" text="{detail>/roleName}"/>
-                    <ObjectAttribute title="Approver" text="{detail>/approverName}"/>
-                </attributes>
-            </ObjectHeader>
+        <VBox id="detailContent" class="grcDetailPage">
+            <Panel headerText="Request Summary" class="grcDetailSection">
+                <VBox class="sapUiSmallMargin">
+                    <Title text="{detail>/requestNumber}" level="H3" class="sapUiTinyMarginBottom"/>
+                    <Text text="{detail>/roleName}" class="sapUiTinyMarginBottom"/>
+                    <ObjectStatus
+                        text="{path: 'detail>/status', formatter: '.formatter.requestStatusText'}"
+                        state="{path: 'detail>/status', formatter: '.formatter.statusState'}"
+                        class="sapUiTinyMarginBottom"/>
+                    <Text text="Requested by {detail>/requestorName} for {detail>/targetUserName}"/>
+                    <Text text="Approver: {detail>/approverName}" visible="{= !!${detail>/approverName} }" class="grcFieldHelp sapUiTinyMarginTop"/>
+                </VBox>
+            </Panel>
 
-            <f:SimpleForm
-                id="detailForm"
-                editable="false"
-                layout="ResponsiveGridLayout"
-                labelSpanL="3" labelSpanM="3"
-                class="sapUiMediumMarginTop">
+            <Panel headerText="Workflow Progress" class="sapUiMediumMarginTop grcDetailSection">
+                <Table
+                    items="{detail>/workflowSteps}"
+                    showSeparators="Inner"
+                    fixedLayout="false"
+                    class="grcWorkflowTable grcDetailWorkflowTable">
+                    <columns>
+                        <Column>
+                            <Text text="Workflow Stage"/>
+                        </Column>
+                        <Column width="13rem" hAlign="Begin">
+                            <Text text="Status"/>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{detail>title}" wrapping="true"/>
+                                <ObjectStatus text="{detail>text}" state="{detail>state}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
 
-                <Label text="Business Justification"/>
-                <Text text="{detail>/businessJustification}"/>
+            <Panel headerText="Request Information" class="sapUiMediumMarginTop">
+                <f:SimpleForm
+                    id="detailForm"
+                    editable="false"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    columnsXL="2"
+                    columnsL="2"
+                    columnsM="1">
 
-                <Label text="Manager Comment" visible="{= !!${detail>/managerComment} }"/>
-                <Text text="{detail>/managerComment}" visible="{= !!${detail>/managerComment} }"/>
+                    <Label text="Current Status"/>
+                    <ObjectStatus
+                        text="{path: 'detail>/status', formatter: '.formatter.requestStatusText'}"
+                        state="{path: 'detail>/status', formatter: '.formatter.statusState'}"/>
 
-                <Label text="Security Comment" visible="{= !!${detail>/securityComment} }"/>
-                <Text text="{detail>/securityComment}" visible="{= !!${detail>/securityComment} }"/>
+                    <Label text="Requested By"/>
+                    <Text text="{detail>/requestorName}"/>
 
-                <Label text="Created On"/>
-                <Text text="{path: 'detail>/createdOn', formatter: '.formatter.formatDateTime'}"/>
+                    <Label text="Requested For"/>
+                    <Text text="{detail>/targetUserName}"/>
 
-                <Label text="Last Updated"/>
-                <Text text="{path: 'detail>/updatedOn', formatter: '.formatter.formatDateTime'}"/>
-            </f:SimpleForm>
+                    <Label text="Employee / User Type"/>
+                    <Text text="{detail>/targetType}"/>
+
+                    <Label text="SAP Role"/>
+                    <Text text="{detail>/roleName}"/>
+
+                    <Label text="Business Justification"/>
+                    <Text text="{detail>/businessJustification}" wrapping="true"/>
+
+                    <Label text="Approver" visible="{= !!${detail>/approverName} }"/>
+                    <Text text="{detail>/approverName}" visible="{= !!${detail>/approverName} }"/>
+
+                    <Label text="Approval / Rejection Date" visible="{= !!${detail>/processedOn} }"/>
+                    <Text text="{path: 'detail>/processedOn', formatter: '.formatter.formatDateTime'}" visible="{= !!${detail>/processedOn} }"/>
+
+                    <Label text="Created On"/>
+                    <Text text="{path: 'detail>/createdOn', formatter: '.formatter.formatDateTime'}"/>
+
+                    <Label text="Last Updated"/>
+                    <Text text="{path: 'detail>/updatedOn', formatter: '.formatter.formatDateTime'}"/>
+                </f:SimpleForm>
+            </Panel>
+
+            <Panel headerText="Approval Comments" class="sapUiMediumMarginTop" visible="{= !!${detail>/managerComment} || !!${detail>/securityComment} }">
+                <VBox>
+                    <VBox visible="{= !!${detail>/managerComment} }" class="sapUiSmallMarginBottom">
+                        <Label text="Manager Comment"/>
+                        <Text text="{detail>/managerComment}" wrapping="true"/>
+                    </VBox>
+                    <VBox visible="{= !!${detail>/securityComment} }">
+                        <Label text="SAP GRC Comment"/>
+                        <Text text="{detail>/securityComment}" wrapping="true"/>
+                    </VBox>
+                </VBox>
+            </Panel>
+
+            <Panel headerText="Role Enablers" class="sapUiMediumMarginTop" visible="{= !!${detail>/selectedEnablers} }">
+                <List items="{detail>/selectedEnablers}" noDataText="No role enabler values recorded">
+                    <CustomListItem>
+                        <VBox class="sapUiTinyMargin">
+                            <ObjectIdentifier title="{detail>name}" text="{detail>subcategoryName}"/>
+                            <List items="{detail>fields}" showSeparators="None">
+                                <CustomListItem>
+                                    <HBox class="grcStatusRow" justifyContent="SpaceBetween">
+                                        <Text text="{detail>label}"/>
+                                        <Text text="{detail>value}" textAlign="End"/>
+                                    </HBox>
+                                </CustomListItem>
+                            </List>
+                        </VBox>
+                    </CustomListItem>
+                </List>
+            </Panel>
 
             <VBox id="managerActionArea" visible="{actionView>/showManagerActions}" class="sapUiMediumMarginTop">
                 <Title text="Manager Decision" level="H4" class="sapUiSmallMarginBottom"/>

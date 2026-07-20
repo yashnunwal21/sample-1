@@ -1,0 +1,29 @@
+{
+  "helpRequests": [
+    {
+      "helpRequestId": "HD-1001",
+      "ticketNumber": "HELP-2026-0001",
+      "subject": "Unable to find required finance role",
+      "createdBy": "U001",
+      "createdByName": "Rohan Sharma",
+      "assignedGroup": "SAP GRC Team",
+      "status": "Open",
+      "createdOn": "2026-07-01T10:00:00",
+      "updatedOn": "2026-07-01T10:20:00",
+      "messages": [
+        {
+          "authorType": "USER",
+          "authorName": "Rohan Sharma",
+          "message": "I am not able to identify the correct AP invoice role in the catalog.",
+          "createdOn": "2026-07-01T10:00:00"
+        },
+        {
+          "authorType": "GRC",
+          "authorName": "Kavita Mehra",
+          "message": "Please search for Z_FI_AP_CLERK. That role covers AP invoice processing.",
+          "createdOn": "2026-07-01T10:20:00"
+        }
+      ]
+    }
+  ]
+}

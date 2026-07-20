@@ -3,12 +3,58 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
 
-    <Page id="RolesPage" title="Role Management" showNavButton="false" class="sapUiContentPadding">
-        <MessageStrip
-            text="Role Management module is under construction. This view is wired into routing and ready for development."
-            type="Information"
-            showIcon="true"
-            class="sapUiMediumMarginBottom"/>
-    </Page>
+    <Page id="RolesPage" title="Roles" showNavButton="false" class="sapUiContentPadding">
+        <VBox>
+            <Title text="Role Repository" level="H3" class="sapUiTinyMarginBottom"/>
+            <Text text="Search SAP roles and transaction codes in read-only mode." class="sapUiMediumMarginBottom"/>
 
+            <Toolbar class="sapUiSmallMarginBottom">
+                <SearchField
+                    id="roleSearchField"
+                    width="24rem"
+                    placeholder="Search by role, module, or T-Code"
+                    search="onSearch"
+                    liveChange="onSearch"/>
+                <ToolbarSpacer/>
+            </Toolbar>
+
+            <Table
+                id="rolesTable"
+                items="{roles>/roles}"
+                growing="true"
+                growingThreshold="10"
+                noDataText="No roles found">
+                <columns>
+                    <Column width="14rem">
+                        <Text text="Role Name"/>
+                    </Column>
+                    <Column minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Description"/>
+                    </Column>
+                    <Column width="12rem" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Module"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="T-Codes"/>
+                    </Column>
+                    <Column minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="Business Purpose"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <ObjectIdentifier title="{roles>roleName}" text="{roles>sapSystem}"/>
+                            <Text text="{roles>description}" wrapping="true"/>
+                            <ObjectStatus text="{roles>businessProcess}" state="Information"/>
+                            <Text text="{path: 'roles>tcodes', formatter: '.formatTcodes'}" wrapping="true"/>
+                            <Text
+                                text="{parts: [{path: 'roles>businessProcess'}, {path: 'roles>description'}], formatter: '.formatBusinessPurpose'}"
+                                wrapping="true"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </VBox>
+    </Page>
 </mvc:View>

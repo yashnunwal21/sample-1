@@ -34,8 +34,9 @@
             <tnt:SideNavigation id="sideNavigation" itemSelect="onNavigate" visible="{appView>/showShellChrome}">
                 <tnt:NavigationList>
                     <tnt:NavigationListItem text="Dashboard" icon="sap-icon://home" key="dashboard"/>
-                    <tnt:NavigationListItem text="Access Requests" icon="sap-icon://document-text" key="requests"/>
+                    <tnt:NavigationListItem text="Access Request" icon="sap-icon://document-text" key="requests"/>
                     <tnt:NavigationListItem text="Roles" icon="sap-icon://shield" key="roles"/>
+                    <tnt:NavigationListItem text="Help Request" icon="sap-icon://sys-help" key="help"/>
                     <tnt:NavigationListItem text="Approvals" icon="sap-icon://task" key="approvals" visible="{appView>/isManagerOrGrc}"/>
                     <tnt:NavigationListItem text="Risk Analysis" icon="sap-icon://alert" key="risk" visible="{appView>/isManagerOrGrc}"/>
                     <tnt:NavigationListItem text="Reports" icon="sap-icon://business-objects-experience" key="reports" visible="{appView>/isManagerOrGrc}"/>

@@ -51,7 +51,53 @@
                 </f:items>
             </f:GridContainer>
 
-            <HBox class="sapUiLargeMarginTop grcDashboardColumns" alignItems="Start">
+            <Panel headerText="My Requests" visible="{= ${roleDashboard>/roleType} === 'EMPLOYEE' }" class="sapUiLargeMarginTop">
+                <List
+                    items="{roleDashboard>/myRequests}"
+                    noDataText="You haven't submitted any requests yet">
+                    <CustomListItem type="Active" press="onRecentRequestPress">
+                        <VBox class="sapUiSmallMargin grcMyRequestItem">
+                            <VBox class="sapUiTinyMarginBottom grcMyRequestHeader">
+                                <ObjectIdentifier title="{roleDashboard>title}" text="{roleDashboard>description}"/>
+                                <Text text="Requested for {roleDashboard>targetUserName}" class="grcFieldHelp"/>
+                                <ObjectStatus
+                                    text="{roleDashboard>statusText}"
+                                    state="{path: 'roleDashboard>status', formatter: '.formatter.statusState'}"
+                                    class="sapUiTinyMarginTop sapUiTinyMarginBottom"/>
+                                <Button
+                                    text="View Details"
+                                    icon="sap-icon://navigation-right-arrow"
+                                    type="Transparent"
+                                    press="onRecentRequestPress"/>
+                            </VBox>
+                            <Table
+                                items="{roleDashboard>workflowSteps}"
+                                showSeparators="Inner"
+                                fixedLayout="false"
+                                class="grcWorkflowTable">
+                                <columns>
+                                    <Column>
+                                        <Text text="Workflow Stage"/>
+                                    </Column>
+                                    <Column width="13rem" hAlign="Begin">
+                                        <Text text="Status"/>
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{roleDashboard>title}" wrapping="true"/>
+                                            <ObjectStatus text="{roleDashboard>text}" state="{roleDashboard>state}"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </CustomListItem>
+                </List>
+            </Panel>
+
+            <HBox class="sapUiLargeMarginTop grcDashboardColumns" alignItems="Start" visible="{= ${roleDashboard>/roleType} !== 'EMPLOYEE' }">
                 <VBox width="62%" class="sapUiMediumMarginEnd">
                     <List
                         items="{roleDashboard>/sections}"
@@ -73,28 +119,7 @@
                 </VBox>
 
                 <VBox width="38%">
-                    <Panel headerText="My Requests" visible="{= ${roleDashboard>/roleType} === 'EMPLOYEE' }">
-                        <List
-                            items="{roleDashboard>/myRequests}"
-                            noDataText="You haven't submitted any requests yet">
-                            <StandardListItem
-                                title="{roleDashboard>title}"
-                                description="{roleDashboard>description}"
-                                icon="sap-icon://request"
-                                info="{
-                                    path: 'roleDashboard>status',
-                                    formatter: '.formatter.requestStatusText'
-                                }"
-                                infoState="{
-                                    path: 'roleDashboard>status',
-                                    formatter: '.formatter.statusState'
-                                }"
-                                type="Navigation"
-                                press="onRecentRequestPress"/>
-                        </List>
-                    </Panel>
-
-                    <Panel headerText="Recent Requests" visible="{= ${roleDashboard>/roleType} !== 'EMPLOYEE' }">
+                    <Panel headerText="Recent Requests">
                         <List
                             items="{roleDashboard>/recentRequests}"
                             noDataText="No recent requests">

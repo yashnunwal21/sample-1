@@ -68,11 +68,93 @@
 
 @media (max-width: 900px) {
     .grcDashboardHeader,
-    .grcDashboardColumns {
+    .grcDashboardColumns,
+    .grcHelpColumns {
         flex-direction: column;
     }
 
-    .grcDashboardColumns > .sapMFlexItem {
+    .grcDashboardColumns > .sapMFlexItem,
+    .grcHelpColumns > .sapMFlexItem {
         width: 100% !important;
     }
+}
+
+.grcMyRequestItem {
+    max-width: 58rem;
+    width: 100%;
+}
+
+.grcWorkflowStep {
+    gap: 1rem;
+    min-height: 2rem;
+    width: 100%;
+}
+
+.grcHelpMessage {
+    border-bottom: 1px solid var(--sapList_BorderColor, #e5e5e5);
+}
+
+.grcMyRequestHeader {
+    gap: 1rem;
+}
+
+.grcWorkflowTable {
+    max-width: 46rem;
+}
+
+.grcWorkflowTable .sapMObjStatusText {
+    white-space: normal;
+}
+
+.grcHelpPage {
+    max-width: none;
+    width: 100%;
+}
+
+.grcHelpColumns {
+    gap: 1rem;
+    width: 100%;
+}
+
+.grcHelpTicketPanel {
+    min-width: 22rem;
+}
+
+.grcHelpThreadPanel {
+    min-width: 32rem;
+}
+
+.grcHelpTicketItem {
+    width: 100%;
+}
+
+.grcTicketNumber {
+    font-weight: 600;
+}
+
+
+.grcHelpThreadPanel .sapMPanelContent,
+.grcHelpTicketPanel .sapMPanelContent {
+    overflow: visible;
+}
+
+.grcMyRequestHeader .sapMObjStatus,
+.grcHelpTicketItem .sapMObjStatus {
+    align-self: flex-start;
+}
+
+.grcMyRequestHeader .sapMBtn {
+    align-self: flex-start;
+}
+
+.grcDetailPage {
+    max-width: 90rem;
+}
+
+.grcDetailSection {
+    max-width: 64rem;
+}
+
+.grcDetailWorkflowTable {
+    max-width: 48rem;
 }

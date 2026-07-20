@@ -78,7 +78,7 @@ sap.ui.define([], () => {
                 .join(", ");
 
             return buildRequestEnvelope(mParams, {
-                roleId: null,
+                roleId: aSelectedEnablers[0]?.roleId || null,
                 roleName: sRoleNameSummary,
                 selectedEnablers: aSelectedEnablers
             });

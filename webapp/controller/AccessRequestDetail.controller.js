@@ -76,6 +76,64 @@ sap.ui.define([
         },
 
         /**
+         * Builds a simple workflow timeline for request tracking.
+         * @param {string} sStatus Request status code.
+         * @returns {object[]} Workflow step rows.
+         */
+        _buildWorkflowSteps(sStatus) {
+            const aSteps = [
+                { key: "DRAFT", title: "Draft" },
+                { key: "SUBMITTED", title: "Submitted" },
+                { key: "MANAGER", title: "Manager Approval" },
+                { key: "GRC", title: "SAP GRC Review" },
+                { key: "PROVISIONING", title: "Provisioning" },
+                { key: "COMPLETED", title: "Completed" }
+            ];
+            const mCurrentIndex = {
+                CLOSED: 5,
+                MANAGER_APPROVED: 3,
+                MANAGER_REJECTED: 2,
+                SAP_APPROVED: 4,
+                SAP_REJECTED: 3,
+                SUBMITTED: 2,
+                WITHDRAWN: 1
+            };
+            const iCurrentIndex = mCurrentIndex[sStatus] ?? 1;
+            const bRejected = sStatus === "MANAGER_REJECTED" || sStatus === "SAP_REJECTED";
+
+            return aSteps.map((oStep, iIndex) => {
+                let sState = "None";
+                let sText = "Not Started";
+
+                if (iIndex < iCurrentIndex || sStatus === "CLOSED") {
+                    sState = "Success";
+                    sText = "Completed";
+                }
+
+                if (iIndex === iCurrentIndex && sStatus !== "CLOSED") {
+                    sState = bRejected ? "Error" : "Warning";
+                    sText = bRejected ? "Rejected" : "Current";
+                }
+
+                return {
+                    state: sState,
+                    text: sText,
+                    title: oStep.title
+                };
+            });
+        },
+
+        /**
+         * Returns date text for processed approval/rejection requests.
+         * @param {object} oRequest Request row.
+         * @returns {string} ISO date text or empty string.
+         */
+        _getProcessedOn(oRequest) {
+            const aProcessedStatuses = ["MANAGER_APPROVED", "MANAGER_REJECTED", "SAP_APPROVED", "SAP_REJECTED", "CLOSED"];
+            return aProcessedStatuses.indexOf(oRequest.status) !== -1 ? oRequest.updatedOn : "";
+        },
+
+        /**
          * Renders request data into the detail models.
          * @returns {void}
          */
@@ -89,7 +147,11 @@ sap.ui.define([
 
             const oActionModel = this.getView().getModel("actionView");
             const oCurrentUser = this._getCurrentUser();
-            this.getView().getModel("detail").setData(oRequest);
+            const oDetailData = Object.assign({}, oRequest, {
+                processedOn: this._getProcessedOn(oRequest),
+                workflowSteps: this._buildWorkflowSteps(oRequest.status)
+            });
+            this.getView().getModel("detail").setData(oDetailData);
             oActionModel.setProperty("/showManagerActions", WorkflowService.canManagerAct(oRequest, SessionService.getCurrentUserId()));
             oActionModel.setProperty("/showSecurityActions", WorkflowService.canSecurityAct(oRequest, oCurrentUser?.userType));
             oActionModel.setProperty("/showCompleteAction", WorkflowService.canComplete(oRequest, oCurrentUser?.userType));
@@ -100,11 +162,11 @@ sap.ui.define([
         },
 
         /**
-         * Navigates back to the request list.
+         * Navigates back to the dashboard.
          * @returns {void}
          */
         onNavBack() {
-            this.getOwnerComponent().getRouter().navTo("requestList");
+            this.getOwnerComponent().getRouter().navTo("dashboard");
         },
 
         /**

@@ -117,12 +117,8 @@ sap.ui.define([
 
             this._setDashboardData(oUser, "MSIL Employee", "Create requests and track your own access approvals.", [
                 this._kpi("new", "New Request", "sap-icon://add-document", "Neutral", "None", 0),
-                this._kpi("my", "My Requests", "sap-icon://documents", "Neutral", "None", aMine.length),
-                this._kpi("approved", "Approved Requests", "sap-icon://accept", "Good", "None", aMine.filter(isApproved).length),
-                this._kpi("rejected", "Rejected Requests", "sap-icon://decline", "Error", "None", aMine.filter(isRejected).length)
-            ], [
-                this._section("Request Status Timeline", this._statusRows(aMine))
-            ], []);
+                this._kpi("my", "My Requests", "sap-icon://documents", "Neutral", "None", aMine.length)
+            ], [], []);
 
             this.getView().getModel("roleDashboard").setProperty("/myRequests", this._myRequestRows(aMine));
         },
@@ -277,6 +273,54 @@ sap.ui.define([
         },
 
         /**
+         * Builds workflow steps shown inside each My Requests row.
+         * @param {string} sStatus Request status code.
+         * @returns {object[]} Workflow step rows.
+         */
+        _requestWorkflowSteps(sStatus) {
+            const aSteps = [
+                { title: "Draft" },
+                { title: "Submitted" },
+                { title: "Manager Approval" },
+                { title: "SAP GRC Review" },
+                { title: "Provisioning" },
+                { title: "Completed" }
+            ];
+            const mCurrentIndex = {
+                CLOSED: 5,
+                MANAGER_APPROVED: 3,
+                MANAGER_REJECTED: 2,
+                SAP_APPROVED: 4,
+                SAP_REJECTED: 3,
+                SUBMITTED: 2,
+                WITHDRAWN: 1
+            };
+            const iCurrentIndex = mCurrentIndex[sStatus] ?? 1;
+            const bRejected = sStatus === "MANAGER_REJECTED" || sStatus === "SAP_REJECTED";
+
+            return aSteps.map((oStep, iIndex) => {
+                let sState = "None";
+                let sText = "Not Started";
+
+                if (iIndex < iCurrentIndex || sStatus === "CLOSED") {
+                    sState = "Success";
+                    sText = "Completed";
+                }
+
+                if (iIndex === iCurrentIndex && sStatus !== "CLOSED") {
+                    sState = bRejected ? "Error" : "Warning";
+                    sText = bRejected ? "Rejected" : "Current";
+                }
+
+                return {
+                    state: sState,
+                    text: sText,
+                    title: oStep.title
+                };
+            });
+        },
+
+        /**
          * Returns all of the current user's own requests, newest first, for
          * the Employee dashboard's My Requests list.
          * @param {object[]} aRequests Request rows already filtered to the current user.
@@ -287,10 +331,14 @@ sap.ui.define([
                 .slice()
                 .sort((oFirst, oSecond) => new Date(oSecond.updatedOn || oSecond.createdOn) - new Date(oFirst.updatedOn || oFirst.createdOn))
                 .map((oRequest) => ({
+                    createdOn: oRequest.createdOn,
                     description: oRequest.roleName || "Access Request",
                     requestId: oRequest.requestId,
                     status: oRequest.status,
-                    title: oRequest.requestNumber
+                    statusText: statusLabel(oRequest.status),
+                    targetUserName: oRequest.targetUserName,
+                    title: oRequest.requestNumber,
+                    workflowSteps: this._requestWorkflowSteps(oRequest.status)
                 }));
         },
 
@@ -327,10 +375,7 @@ sap.ui.define([
 
             if (QUEUE_KPI_IDS.indexOf(sId) !== -1) {
                 this.getOwnerComponent().getRouter().navTo("approvals");
-                return;
             }
-
-            this.getOwnerComponent().getRouter().navTo("requestList");
         },
 
         /**

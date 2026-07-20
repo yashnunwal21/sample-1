@@ -1,0 +1,116 @@
+<mvc:View
+    controllerName="com.sap.grc.sapgrcaccessmanagement.controller.HelpRequest"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form">
+
+    <Page id="HelpRequestPage" title="Help Request" showNavButton="false" class="sapUiContentPadding">
+        <VBox class="grcHelpPage" width="100%">
+            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
+                <VBox>
+                    <Title text="Help Request" level="H3" class="sapUiTinyMarginBottom"/>
+                    <Text text="Send SAP GRC access questions or issues to the support team."/>
+                </VBox>
+                <Button text="Dashboard" icon="sap-icon://home" press="onBackToDashboard"/>
+            </HBox>
+
+            <Panel headerText="Compose Service Request" class="sapUiMediumMarginBottom">
+                <f:SimpleForm
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="2"
+                    labelSpanL="2"
+                    labelSpanM="3"
+                    labelSpanS="12"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1">
+                    <Label text="Subject" required="true"/>
+                    <Input value="{helpView>/subject}" placeholder="Example: Need help selecting an AP role"/>
+
+                    <Label text="Message" required="true"/>
+                    <TextArea
+                        value="{helpView>/message}"
+                        rows="5"
+                        growing="true"
+                        growingMaxLines="10"
+                        width="100%"
+                        placeholder="Describe the issue, request number, role name, or error message"/>
+                </f:SimpleForm>
+                <Toolbar>
+                    <ToolbarSpacer/>
+                    <Button text="Clear" press="onClearDraft"/>
+                    <Button text="Submit Help Request" type="Emphasized" press="onSubmitHelpRequest"/>
+                </Toolbar>
+            </Panel>
+
+            <HBox class="grcHelpColumns" alignItems="Start" width="100%">
+                <Panel headerText="{= ${helpView>/isGrcUser} ? 'SAP GRC Team Queue' : 'My Help Requests' }" width="24rem" class="grcHelpTicketPanel">
+                    <layoutData>
+                        <FlexItemData growFactor="0" shrinkFactor="0" baseSize="24rem"/>
+                    </layoutData>
+                    <List items="{helpView>/tickets}" noDataText="No help requests available">
+                        <CustomListItem type="Active" press="onTicketPress">
+                            <VBox class="sapUiSmallMargin grcHelpTicketItem">
+                                <Text text="{helpView>ticketNumber}" wrapping="true" class="grcTicketNumber"/>
+                                <ObjectStatus text="{helpView>status}" state="Information" class="sapUiTinyMarginTop"/>
+                                <Text text="{helpView>subject}" wrapping="true" class="sapUiTinyMarginTop"/>
+                            </VBox>
+                        </CustomListItem>
+                    </List>
+                </Panel>
+
+                <Panel headerText="Message Thread" width="auto" class="grcHelpThreadPanel">
+                    <layoutData>
+                        <FlexItemData growFactor="1" shrinkFactor="1" baseSize="0"/>
+                    </layoutData>
+                    <VBox visible="{= !!${helpView>/selectedTicket} }">
+                        <ObjectHeader
+                            title="{helpView>/selectedTicket/ticketNumber}"
+                            intro="{helpView>/selectedTicket/subject}">
+                            <attributes>
+                                <ObjectAttribute title="Raised By" text="{helpView>/selectedTicket/createdByName}"/>
+                                <ObjectAttribute title="Assigned To" text="{helpView>/selectedTicket/assignedGroup}"/>
+                                <ObjectAttribute title="Status" text="{helpView>/selectedTicket/status}"/>
+                            </attributes>
+                        </ObjectHeader>
+
+                        <List
+                            items="{helpView>/selectedTicket/messages}"
+                            noDataText="No messages yet"
+                            class="sapUiSmallMarginTop sapUiSmallMarginBottom">
+                            <CustomListItem>
+                                <VBox class="sapUiTinyMargin grcHelpMessage">
+                                    <HBox justifyContent="SpaceBetween" alignItems="Center">
+                                        <ObjectStatus text="{helpView>authorName}" state="{= ${helpView>authorType} === 'GRC' ? 'Information' : 'None' }"/>
+                                        <Text text="{path: 'helpView>createdOn', formatter: '.formatter.formatDateTime'}" class="grcFieldHelp"/>
+                                    </HBox>
+                                    <Text text="{helpView>message}" wrapping="true" class="sapUiTinyMarginTop"/>
+                                </VBox>
+                            </CustomListItem>
+                        </List>
+
+                        <Panel headerText="Reply" backgroundDesign="Transparent">
+                            <TextArea
+                                value="{helpView>/replyMessage}"
+                                rows="3"
+                                growing="true"
+                                growingMaxLines="6"
+                                width="100%"
+                                placeholder="Write a reply"/>
+                            <Toolbar>
+                                <ToolbarSpacer/>
+                                <Button text="Send Reply" type="Emphasized" press="onSendReply"/>
+                            </Toolbar>
+                        </Panel>
+                    </VBox>
+                    <MessageStrip
+                        text="Select a help request to view the conversation."
+                        type="Information"
+                        showIcon="true"
+                        visible="{= !${helpView>/selectedTicket} }"/>
+                </Panel>
+            </HBox>
+        </VBox>
+    </Page>
+</mvc:View>
