@@ -10,7 +10,7 @@
             <Title text="New Access Request" level="H3" class="sapUiTinyMarginBottom"/>
             <Text text="Complete the request from employee details through role enablers before submitting." class="sapUiMediumMarginBottom"/>
 
-            <Panel headerText="1. Employee Details" class="sapUiMediumMarginBottom">
+            <Panel headerText="1. Employee Details" expandable="true" expanded="true" class="sapUiMediumMarginBottom">
                 <SegmentedButton id="requesterTypeButton" selectedKey="{formView>/requesterType}" select="onRequesterTypeChange" class="sapUiSmallMarginBottom">
                     <items>
                         <SegmentedButtonItem key="MSIL" text="MSIL Employee"/>
@@ -42,7 +42,7 @@
                         columnsL="2"
                         columnsM="1"
                         visible="{= ${formView>/forSelfIndex} === 0 }">
-                        <Label text="Employee ID"/>
+                        <Label text="Staff ID"/>
                         <Text text="{formView>/currentEmployee/employeeId}"/>
                         <Label text="Employee Name"/>
                         <Text text="{formView>/currentEmployee/fullName}"/>
@@ -50,19 +50,25 @@
                         <Text text="{formView>/currentEmployee/department}"/>
                         <Label text="Designation"/>
                         <Text text="{formView>/currentEmployee/designation}"/>
+                        <Label text="Plant"/>
+                        <Text text="{formView>/currentEmployee/plant}"/>
+                        <Label text="Manager"/>
+                        <Text text="{formView>/currentEmployee/managerName}"/>
+                        <Label text="Email"/>
+                        <Text text="{formView>/currentEmployee/email}"/>
                         <Label text="Employment Type"/>
                         <ObjectStatus text="{formView>/currentEmployee/employmentType}" state="Information"/>
                     </f:SimpleForm>
 
                     <VBox visible="{= ${formView>/forSelfIndex} === 1 }">
-                        <Label text="Employee ID" required="true"/>
+                        <Label text="Staff ID" required="true"/>
                         <HBox class="sapUiTinyMarginBottom">
                             <Input
                                 id="employeeIdInput"
                                 value="{formView>/employeeIdInput}"
                                 maxLength="6"
                                 width="10rem"
-                                placeholder="6-digit ID"
+                                placeholder="6-digit Staff ID"
                                 class="sapUiTinyMarginEnd"/>
                             <Button text="Search Employee" press="onEmployeeLookup"/>
                         </HBox>
@@ -83,7 +89,7 @@
                             columnsL="2"
                             columnsM="1"
                             visible="{= !!${formView>/targetEmployee} }">
-                            <Label text="Employee ID"/>
+                            <Label text="Staff ID"/>
                             <Text text="{formView>/targetEmployee/employeeId}"/>
                             <Label text="Employee Name"/>
                             <Text text="{formView>/targetEmployee/fullName}"/>
@@ -91,10 +97,14 @@
                             <Text text="{formView>/targetEmployee/department}"/>
                             <Label text="Designation"/>
                             <Text text="{formView>/targetEmployee/designation}"/>
-                            <Label text="Employment Type"/>
-                            <ObjectStatus text="{formView>/targetEmployee/employmentType}" state="Information"/>
+                            <Label text="Plant"/>
+                            <Text text="{formView>/targetEmployee/plant}"/>
                             <Label text="Manager"/>
                             <Text text="{formView>/targetEmployee/managerName}"/>
+                            <Label text="Email"/>
+                            <Text text="{formView>/targetEmployee/email}"/>
+                            <Label text="Employment Type"/>
+                            <ObjectStatus text="{formView>/targetEmployee/employmentType}" state="Information"/>
                         </f:SimpleForm>
                     </VBox>
                 </VBox>
@@ -131,12 +141,19 @@
                 visible="{= !!${formView>/targetSummary} }"
                 class="sapUiMediumMarginBottom"/>
 
-            <Panel headerText="2. Business Area" class="sapUiMediumMarginBottom" visible="{formView>/showConfigurationSteps}">
+            <MessageStrip
+                text="Complete valid requester details to continue to Business Area selection."
+                type="Information"
+                showIcon="true"
+                visible="{= !${formView>/showConfigurationSteps} }"
+                class="sapUiMediumMarginBottom"/>
+
+            <Panel headerText="2. Business Area" expandable="true" expanded="true" class="sapUiMediumMarginBottom" visible="{formView>/showConfigurationSteps}">
                 <VBox>
                     <Label text="Business Area" required="true"/>
                     <Select
                         id="businessAreaSelect"
-                        width="100%"
+                        width="24rem"
                         forceSelection="false"
                         selectedKey="{formView>/selectedBusinessAreaId}"
                         change="onBusinessAreaChange"
@@ -147,12 +164,12 @@
                 </VBox>
             </Panel>
 
-            <Panel headerText="3. Subcategory" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedBusinessAreaId} }">
+            <Panel headerText="3. Subcategory" expandable="true" expanded="true" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedBusinessAreaId} }">
                 <VBox>
                     <Label text="Subcategory" required="true"/>
                     <Select
                         id="subcategorySelect"
-                        width="100%"
+                        width="24rem"
                         forceSelection="false"
                         selectedKey="{formView>/selectedSubcategoryId}"
                         change="onSubcategoryChange"
@@ -163,12 +180,12 @@
                 </VBox>
             </Panel>
 
-            <Panel headerText="4. Role Selection" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedSubcategoryId} }">
+            <Panel headerText="4. Role Selection" expandable="true" expanded="true" class="sapUiMediumMarginBottom" visible="{= !!${formView>/selectedSubcategoryId} }">
                 <VBox>
                     <Label text="SAP Role" required="true"/>
                     <Select
                         id="roleSelect"
-                        width="100%"
+                        width="24rem"
                         forceSelection="false"
                         selectedKey="{formView>/selectedRoleId}"
                         change="onRoleChange"
@@ -182,6 +199,8 @@
             <Panel
                 id="requestDetailsPanel"
                 headerText="5. Role Enablers"
+                expandable="true"
+                expanded="true"
                 visible="{= !!${formView>/selectedRoleId} }"
                 class="sapUiMediumMarginBottom">
                 <VBox>
@@ -190,7 +209,7 @@
                 </VBox>
             </Panel>
 
-            <Panel headerText="6. Review &amp; Submit" visible="{= !!${formView>/selectedRoleId} }">
+            <Panel headerText="6. Review &amp; Submit" expandable="true" expanded="true" visible="{= !!${formView>/selectedRoleId} }">
                 <Text text="Review the selected employee, business area, subcategory, role, and enabler values before submitting."/>
             </Panel>
         </VBox>

@@ -1,56 +1,99 @@
 <mvc:View
     controllerName="com.sap.grc.sapgrcaccessmanagement.controller.Roles"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
 
     <Page id="RolesPage" title="Roles" showNavButton="false" class="sapUiContentPadding">
-        <VBox>
-            <Title text="Role Repository" level="H3" class="sapUiTinyMarginBottom"/>
-            <Text text="Search SAP roles and transaction codes in read-only mode." class="sapUiMediumMarginBottom"/>
+        <VBox class="grcRoleCatalog">
+            <Title text="Role Catalog" level="H3" class="sapUiTinyMarginBottom"/>
+            <Text text="Search SAP roles, owners, and transaction codes in read-only mode." class="sapUiMediumMarginBottom"/>
 
-            <Toolbar class="sapUiSmallMarginBottom">
+            <HBox class="grcRoleKpiStrip sapUiSmallMarginBottom" alignItems="Stretch">
+                <VBox class="grcRoleKpiBox">
+                    <ObjectNumber number="{roleView>/roleCount}" unit="Roles" emphasized="true"/>
+                    <Text text="Catalog Roles"/>
+                </VBox>
+                <VBox class="grcRoleKpiBox">
+                    <ObjectNumber number="{roleView>/activeCount}" unit="Active" state="Success" emphasized="true"/>
+                    <Text text="Available Roles"/>
+                </VBox>
+                <VBox class="grcRoleKpiBox">
+                    <ObjectNumber number="{roleView>/criticalCount}" unit="Critical" state="Error" emphasized="true"/>
+                    <Text text="High Control Attention"/>
+                </VBox>
+                <VBox class="grcRoleKpiBox">
+                    <ObjectNumber number="{roleView>/tcodeCount}" unit="T-Codes" emphasized="true"/>
+                    <Text text="Transactions Covered"/>
+                </VBox>
+            </HBox>
+
+            <OverflowToolbar class="sapUiSmallMarginBottom">
                 <SearchField
                     id="roleSearchField"
-                    width="24rem"
-                    placeholder="Search by role, module, or T-Code"
+                    width="22rem"
+                    placeholder="Search role, owner, module, or T-Code"
                     search="onSearch"
                     liveChange="onSearch"/>
+                <Select selectedKey="{roleView>/selectedModule}" change="onFilterChange" width="14rem" items="{roleView>/modules}">
+                    <core:Item key="{roleView>key}" text="{roleView>text}"/>
+                </Select>
+                <Select selectedKey="{roleView>/selectedRisk}" change="onFilterChange" width="10rem">
+                    <core:Item key="" text="All Risks"/>
+                    <core:Item key="Critical" text="Critical"/>
+                    <core:Item key="High" text="High"/>
+                    <core:Item key="Medium" text="Medium"/>
+                    <core:Item key="Low" text="Low"/>
+                </Select>
+                <Select selectedKey="{roleView>/selectedStatus}" change="onFilterChange" width="10rem">
+                    <core:Item key="" text="All Status"/>
+                    <core:Item key="Active" text="Active"/>
+                    <core:Item key="Inactive" text="Inactive"/>
+                </Select>
                 <ToolbarSpacer/>
-            </Toolbar>
+                <Button text="Clear" icon="sap-icon://reset" press="onClearFilters"/>
+            </OverflowToolbar>
 
             <Table
                 id="rolesTable"
                 items="{roles>/roles}"
                 growing="true"
                 growingThreshold="10"
+                sticky="ColumnHeaders"
                 noDataText="No roles found">
                 <columns>
-                    <Column width="14rem">
-                        <Text text="Role Name"/>
+                    <Column width="15rem">
+                        <Text text="Role"/>
                     </Column>
-                    <Column minScreenWidth="Tablet" demandPopin="true">
+                    <Column width="20rem" minScreenWidth="Tablet" demandPopin="true">
                         <Text text="Description"/>
                     </Column>
                     <Column width="12rem" minScreenWidth="Tablet" demandPopin="true">
                         <Text text="Module"/>
                     </Column>
-                    <Column minScreenWidth="Desktop" demandPopin="true">
+                    <Column width="9rem" minScreenWidth="Tablet" demandPopin="true">
+                        <Text text="Owner"/>
+                    </Column>
+                    <Column width="12rem" minScreenWidth="Desktop" demandPopin="true">
                         <Text text="T-Codes"/>
                     </Column>
-                    <Column minScreenWidth="Desktop" demandPopin="true">
-                        <Text text="Business Purpose"/>
+                    <Column width="8rem" hAlign="Center" minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="Risk"/>
+                    </Column>
+                    <Column width="8rem" hAlign="Center" minScreenWidth="Desktop" demandPopin="true">
+                        <Text text="Status"/>
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem type="Navigation" press="onRolePress">
                         <cells>
                             <ObjectIdentifier title="{roles>roleName}" text="{roles>sapSystem}"/>
                             <Text text="{roles>description}" wrapping="true"/>
                             <ObjectStatus text="{roles>businessProcess}" state="Information"/>
-                            <Text text="{path: 'roles>tcodes', formatter: '.formatTcodes'}" wrapping="true"/>
-                            <Text
-                                text="{parts: [{path: 'roles>businessProcess'}, {path: 'roles>description'}], formatter: '.formatBusinessPurpose'}"
-                                wrapping="true"/>
+                            <Text text="{roles>ownerName}" wrapping="true"/>
+                            <Text text="{roles>tcodesText}" wrapping="true"/>
+                            <ObjectStatus text="{roles>riskLevel}" state="{path: 'roles>riskLevel', formatter: '.formatter.statusState'}"/>
+                            <ObjectStatus text="{roles>status}" state="{path: 'roles>status', formatter: '.formatter.statusState'}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

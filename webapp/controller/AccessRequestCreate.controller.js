@@ -74,25 +74,18 @@ sap.ui.define([
                 selectedRoleName: "",
                 selectedSubcategoryDescription: "",
                 selectedSubcategoryId: "",
-                showConfigurationSteps: true,
+                showConfigurationSteps: false,
                 subcategories: [],
                 targetEmployee: null,
                 targetSummary: ""
             });
             this.getView().setModel(oFormViewModel, "formView");
 
-            const oCurrentUser = this._getCurrentUser();
-            if (oCurrentUser) {
-                oFormViewModel.setProperty("/currentEmployee", {
-                    employeeId: oCurrentUser.employeeId,
-                    fullName: oCurrentUser.fullName,
-                    department: oCurrentUser.department,
-                    designation: oCurrentUser.jobTitle,
-                    employmentType: "MSIL",
-                    plant: oCurrentUser.plant
+            this._getModel("users").dataLoaded().then(() => this._loadSelfEmployeeDetails())
+                .catch(() => {
+                    oFormViewModel.setProperty("/employeeLookupError", "Unable to load logged-in employee details.");
+                    this._updateStepState();
                 });
-                oFormViewModel.setProperty("/targetSummary", `${oCurrentUser.employeeId} - ${oCurrentUser.fullName} | ${oCurrentUser.department} | MSIL`);
-            }
 
             const oFormConfigModel = this._getModel("formConfig");
             oFormConfigModel.dataLoaded().then(() => {
@@ -103,6 +96,23 @@ sap.ui.define([
                     name
                 })));
             });
+
+            this.getOwnerComponent().getRouter().getRoute("requestCreate")
+                .attachPatternMatched(this._onRouteMatched, this);
+        },
+
+        /**
+         * Re-runs the self-employee lookup on every visit to this page. A
+         * view instance's onInit only fires once, so without this, a first
+         * load that happened before login finished (e.g. a direct/bookmarked
+         * link, or a page refresh while on this route) would leave the
+         * "For Yourself" details permanently blank even after logging in
+         * and returning here. Matches the same attachPatternMatched pattern
+         * already used by AccessRequestDetail and Approvals.
+         * @returns {void}
+         */
+        _onRouteMatched() {
+            this._getModel("users").dataLoaded().then(() => this._loadSelfEmployeeDetails());
         },
 
         /**
@@ -132,6 +142,60 @@ sap.ui.define([
         },
 
         /**
+         * Converts a user master row into the employee payload shown in the form.
+         * @param {object} oUser User master row.
+         * @returns {object} Employee details for the form.
+         */
+        _employeeDetailsFromUser(oUser) {
+            return {
+                department: oUser.department,
+                designation: oUser.jobTitle,
+                email: oUser.email,
+                employeeId: oUser.employeeId,
+                employmentType: "MSIL",
+                fullName: oUser.fullName,
+                managerName: oUser.managerName,
+                plant: oUser.plant,
+                userId: oUser.userId
+            };
+        },
+
+        /**
+         * Loads the logged-in user's own employee details for the Self flow.
+         * @returns {void}
+         */
+        _loadSelfEmployeeDetails() {
+            const oFormViewModel = this._getFormViewModel();
+            const oCurrentUser = this._getCurrentUser();
+
+            if (!oCurrentUser || !/^\d{6}$/.test(oCurrentUser.employeeId || "")) {
+                oFormViewModel.setProperty("/currentEmployee", null);
+                oFormViewModel.setProperty("/employeeLookupError", "Logged-in user's 6-digit MSIL Staff ID could not be found.");
+                this._resetConfigurationSelections();
+                this._updateStepState();
+                return;
+            }
+
+            oFormViewModel.setProperty("/employeeLookupError", "");
+            oFormViewModel.setProperty("/currentEmployee", this._employeeDetailsFromUser(oCurrentUser));
+            this._updateStepState();
+        },
+
+        /**
+         * Clears all request configuration selected after requester details.
+         * @returns {void}
+         */
+        _resetConfigurationSelections() {
+            const oFormViewModel = this._getFormViewModel();
+            oFormViewModel.setProperty("/selectedBusinessAreaDescription", "");
+            oFormViewModel.setProperty("/selectedBusinessAreaId", "");
+            oFormViewModel.setProperty("/selectedSubcategoryDescription", "");
+            oFormViewModel.setProperty("/selectedSubcategoryId", "");
+            oFormViewModel.setProperty("/subcategories", []);
+            this._resetRoleAndFields();
+        },
+
+        /**
          * Returns true once the request target section has enough information.
          * @returns {boolean} Whether employee details are complete.
          */
@@ -140,13 +204,15 @@ sap.ui.define([
             const sRequesterType = oFormViewModel.getProperty("/requesterType");
 
             if (sRequesterType === "MSIL") {
-                return oFormViewModel.getProperty("/forSelfIndex") === 0 || !!oFormViewModel.getProperty("/targetEmployee");
+                const oEmployee = oFormViewModel.getProperty(oFormViewModel.getProperty("/forSelfIndex") === 0 ? "/currentEmployee" : "/targetEmployee");
+                return !!(oEmployee && oEmployee.employeeId && oEmployee.fullName && oEmployee.department && oEmployee.designation && oEmployee.email);
             }
 
+            const sEmail = (oFormViewModel.getProperty("/outsiderEmail") || "").trim();
             return !!(
                 (oFormViewModel.getProperty("/outsiderName") || "").trim() &&
                 (oFormViewModel.getProperty("/outsiderOrganization") || "").trim() &&
-                (oFormViewModel.getProperty("/outsiderEmail") || "").trim() &&
+                /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(sEmail) &&
                 (oFormViewModel.getProperty("/outsiderMobile") || "").trim() &&
                 (oFormViewModel.getProperty("/outsiderPurpose") || "").trim()
             );
@@ -231,12 +297,19 @@ sap.ui.define([
             oFormViewModel.setProperty("/outsiderEmail", "");
             oFormViewModel.setProperty("/outsiderMobile", "");
             oFormViewModel.setProperty("/outsiderPurpose", "");
-            this._resetRoleAndFields();
+            this._resetConfigurationSelections();
+
+            if (oFormViewModel.getProperty("/requesterType") === "MSIL") {
+                this._loadSelfEmployeeDetails();
+                return;
+            }
+
+            oFormViewModel.setProperty("/currentEmployee", null);
             this._updateStepState();
         },
 
         /**
-         * Looks up an MSIL employee by their 6-digit Employee ID. This is a
+         * Looks up an MSIL employee by their 6-digit Staff ID. This is a
          * mock lookup against the users mock data; replace with an OData
          * call to the employee master service once available.
          * @returns {void}
@@ -246,9 +319,12 @@ sap.ui.define([
             const sEmployeeId = (oFormViewModel.getProperty("/employeeIdInput") || "").trim();
 
             oFormViewModel.setProperty("/targetEmployee", null);
+            this._resetConfigurationSelections();
+            this._updateStepState();
 
             if (!/^\d{6}$/.test(sEmployeeId)) {
-                oFormViewModel.setProperty("/employeeLookupError", "Enter a valid 6-digit MSIL Employee ID.");
+                oFormViewModel.setProperty("/employeeLookupError", "Enter a valid 6-digit MSIL Staff ID.");
+                this._updateStepState();
                 return;
             }
 
@@ -256,21 +332,13 @@ sap.ui.define([
             const oEmployee = aUsers.find((oUser) => oUser.employeeId === sEmployeeId);
 
             if (!oEmployee) {
-                oFormViewModel.setProperty("/employeeLookupError", "No MSIL employee found with that Employee ID.");
+                oFormViewModel.setProperty("/employeeLookupError", "No MSIL employee found with that Staff ID.");
+                this._updateStepState();
                 return;
             }
 
             oFormViewModel.setProperty("/employeeLookupError", "");
-            oFormViewModel.setProperty("/targetEmployee", {
-                userId: oEmployee.userId,
-                employeeId: oEmployee.employeeId,
-                fullName: oEmployee.fullName,
-                department: oEmployee.department,
-                plant: oEmployee.plant,
-                designation: oEmployee.jobTitle,
-                employmentType: "MSIL",
-                managerName: oEmployee.managerName
-            });
+            oFormViewModel.setProperty("/targetEmployee", this._employeeDetailsFromUser(oEmployee));
             this._updateStepState();
         },
 
@@ -279,7 +347,7 @@ sap.ui.define([
          * @returns {void}
          */
         onRequesterDetailsChange() {
-            this._resetRoleAndFields();
+            this._resetConfigurationSelections();
             this._updateStepState();
         },
 
@@ -564,17 +632,13 @@ sap.ui.define([
 
             if (sRequesterType === "MSIL") {
                 if (oFormViewModel.getProperty("/forSelfIndex") === 0) {
-                    const oCurrentUser = this._getCurrentUser();
-                    return {
-                        type: "MSIL",
-                        userId: oCurrentUser.userId,
-                        fullName: oCurrentUser.fullName,
-                        employeeId: oCurrentUser.employeeId,
-                        department: oCurrentUser.department,
-                        designation: oCurrentUser.jobTitle,
-                        employmentType: "MSIL",
-                        plant: oCurrentUser.plant
-                    };
+                    const oCurrentEmployee = oFormViewModel.getProperty("/currentEmployee");
+                    if (!oCurrentEmployee) {
+                        MessageToast.show("Logged-in employee details are not loaded yet.");
+                        return null;
+                    }
+
+                    return Object.assign({ type: "MSIL" }, oCurrentEmployee);
                 }
 
                 const oTargetEmployee = oFormViewModel.getProperty("/targetEmployee");
@@ -688,9 +752,13 @@ sap.ui.define([
             aRequests.push(oNewRequest);
             oRequestsModel.setProperty("/accessRequests", aRequests);
 
+            const bAutoApproved = oNewRequest.status === "MANAGER_APPROVED";
+
             MessageBox.success(
-                `Request ${sRequestNumber} submitted for ${oTarget.fullName}` +
-                `${oNewRequest.approverName ? ` and routed to ${oNewRequest.approverName} for approval.` : "."}`,
+                bAutoApproved
+                    ? `Request ${sRequestNumber} submitted and auto-approved. Routed directly to the SAP GRC team (DE-DCG) for review.`
+                    : `Request ${sRequestNumber} submitted for ${oTarget.fullName}` +
+                        `${oNewRequest.approverName ? ` and routed to ${oNewRequest.approverName} for approval.` : "."}`,
                 {
                     onClose: () => this.getOwnerComponent().getRouter().navTo("dashboard")
                 }

@@ -158,3 +158,20 @@
 .grcDetailWorkflowTable {
     max-width: 48rem;
 }
+
+.grcRoleCatalog {
+    max-width: 96rem;
+}
+
+.grcRoleKpiStrip {
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.grcRoleKpiBox {
+    min-width: 12rem;
+    padding: 1rem;
+    background: var(--sapGroup_ContentBackground, #fff);
+    border: 1px solid var(--sapList_BorderColor, #e5e5e5);
+    border-radius: 0.5rem;
+}

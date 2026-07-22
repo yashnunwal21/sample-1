@@ -3,6 +3,26 @@ sap.ui.define([], () => {
 
     const now = () => new Date().toISOString();
 
+    // MSIL hierarchy designations authorized to self-approve: if a DPM or DVM
+    // raises an access request for themselves, it is auto-approved and routed
+    // directly to the SAP GRC team (DE-DCG), skipping the normal manager
+    // approval stage - matching the DPM/DVM chain-of-command already sitting
+    // at or near the top of their own reporting line.
+    const SELF_APPROVING_DESIGNATIONS = ["DPM", "DVM"];
+
+    /**
+     * Checks whether a request qualifies for DPM/DVM self-approval: the
+     * requestor must be requesting for themselves (not another employee or
+     * an outsider), and must hold a self-approving designation.
+     * @param {object} oCurrentUser The requestor.
+     * @param {object} oTarget The resolved request target.
+     * @returns {boolean} Whether the request should be auto-approved.
+     */
+    const isSelfApprovingRequest = (oCurrentUser, oTarget) =>
+        oTarget.type === "MSIL" &&
+        oTarget.userId === oCurrentUser.userId &&
+        SELF_APPROVING_DESIGNATIONS.indexOf(oCurrentUser.designation) !== -1;
+
     /**
      * Creates the common request envelope used by both static and dynamic requests.
      * @param {object} mParams Request build parameters.
@@ -19,6 +39,8 @@ sap.ui.define([], () => {
             plant: mParams.currentUser.plant
         };
 
+        const bAutoApproved = isSelfApprovingRequest(mParams.currentUser, oTarget);
+
         return Object.assign({
             requestId: `AR-${Date.now()}`,
             requestNumber: mParams.requestNumber,
@@ -31,9 +53,11 @@ sap.ui.define([], () => {
             approverId: mParams.currentUser.managerId || null,
             approverName: mParams.currentUser.managerName || null,
             businessJustification: mParams.businessJustification,
-            managerComment: null,
+            managerComment: bAutoApproved
+                ? `Auto-approved: ${mParams.currentUser.fullName} (${mParams.currentUser.designation}) requested access for themselves. Routed directly to the SAP GRC team (DE-DCG) for review.`
+                : null,
             securityComment: null,
-            status: "SUBMITTED",
+            status: bAutoApproved ? "MANAGER_APPROVED" : "SUBMITTED",
             createdOn: now(),
             updatedOn: now()
         }, mExtras);

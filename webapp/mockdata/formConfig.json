@@ -1,4 +1,4 @@
-﻿{
+{
   "businessAreas": [
     { "businessAreaId": "BA_FIN", "name": "Finance", "description": "Financial accounting, controlling, and reporting access.", "sortOrder": 1, "active": true },
     { "businessAreaId": "BA_HR", "name": "HR", "description": "Employee, payroll, and organizational management access.", "sortOrder": 2, "active": true },
@@ -27,7 +27,7 @@
   "requestFields": [
     { "fieldId": "COMPANY_CODE", "label": "Company Code", "fieldType": "Select", "placeholder": "Select company code", "helpText": "Legal company code where the access is required.", "options": [ { "key": "1000", "text": "1000 - Acme India" }, { "key": "2000", "text": "2000 - Acme Europe" }, { "key": "3000", "text": "3000 - Acme US" } ], "active": true },
     { "fieldId": "COST_CENTER", "label": "Cost Center", "fieldType": "Text", "placeholder": "Enter cost center", "helpText": "Cost center scope for this access.", "active": true },
-    { "fieldId": "PLANT", "label": "Plant", "fieldType": "Select", "placeholder": "Select plant", "helpText": "Plant where this access applies.", "options": [ { "key": "1100", "text": "1100 - Manesar Plant" }, { "key": "1200", "text": "1200 - Gurgaon Plant" }, { "key": "2100", "text": "2100 - Hamburg Plant" } ], "active": true },
+    { "fieldId": "PLANT", "label": "Plant", "fieldType": "Select", "placeholder": "Select plant", "helpText": "Plant where this access applies.", "options": [ { "key": "1100", "text": "1100 - Manesar Plant" }, { "key": "1200", "text": "1200 - Gurugram Plant" }, { "key": "2100", "text": "2100 - Hansalpur Plant" } ], "active": true },
     { "fieldId": "PROFIT_CENTER", "label": "Profit Center", "fieldType": "Text", "placeholder": "Enter profit center", "helpText": "Profit center scope for reporting or posting.", "active": true },
     { "fieldId": "PURCH_ORG", "label": "Purchasing Organization", "fieldType": "Select", "placeholder": "Select purchasing organization", "helpText": "Purchasing organization for procurement access.", "options": [ { "key": "PO10", "text": "PO10 - India Purchasing" }, { "key": "PO20", "text": "PO20 - Europe Purchasing" } ], "active": true },
     { "fieldId": "SALES_ORG", "label": "Sales Organization", "fieldType": "Select", "placeholder": "Select sales organization", "helpText": "Sales organization for sales or billing access.", "options": [ { "key": "SO10", "text": "SO10 - India Sales" }, { "key": "SO20", "text": "SO20 - Europe Sales" } ], "active": true },

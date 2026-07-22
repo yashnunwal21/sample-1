@@ -10,8 +10,8 @@
       "department": "Finance",
       "jobTitle": "AP Accountant",
       "companyCode": "1000",
-      "managerId": "U006",
-      "managerName": "Vikram Chaudhary",
+      "managerId": "U004",
+      "managerName": "Priya Malhotra",
       "status": "Active",
       "riskLevel": "Medium",
       "userType": "EMPLOYEE",
@@ -23,7 +23,8 @@
       "validFrom": "2022-03-01",
       "validTo": "9999-12-31",
       "employeeId": "100101",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "AM"
     },
     {
       "userId": "U002",
@@ -48,7 +49,8 @@
       "validFrom": "2020-07-15",
       "validTo": "9999-12-31",
       "employeeId": "100102",
-      "plant": "Manesar Plant"
+      "plant": "Manesar Plant",
+      "designation": "MGR"
     },
     {
       "userId": "U003",
@@ -57,7 +59,7 @@
       "lastName": "Kumar",
       "fullName": "Amit Kumar",
       "email": "amit.kumar@acme.com",
-      "department": "IT Security",
+      "department": "DE-DCG",
       "jobTitle": "Security Administrator",
       "companyCode": "1000",
       "managerId": "U007",
@@ -72,7 +74,8 @@
       "validFrom": "2019-01-10",
       "validTo": "9999-12-31",
       "employeeId": "100103",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "SMGR"
     },
     {
       "userId": "U004",
@@ -84,8 +87,8 @@
       "department": "Finance",
       "jobTitle": "Finance Manager",
       "companyCode": "1000",
-      "managerId": "U007",
-      "managerName": "Kavita Mehra",
+      "managerId": null,
+      "managerName": null,
       "status": "Active",
       "riskLevel": "Medium",
       "userType": "MANAGER",
@@ -98,7 +101,8 @@
       "validFrom": "2018-05-01",
       "validTo": "9999-12-31",
       "employeeId": "100104",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "DPM"
     },
     {
       "userId": "U005",
@@ -123,7 +127,8 @@
       "validFrom": "2021-09-20",
       "validTo": "9999-12-31",
       "employeeId": "100105",
-      "plant": "Manesar Plant"
+      "plant": "Hansalpur Plant",
+      "designation": "AM"
     },
     {
       "userId": "U006",
@@ -135,8 +140,8 @@
       "department": "Procurement",
       "jobTitle": "Head of Procurement",
       "companyCode": "1000",
-      "managerId": "U007",
-      "managerName": "Kavita Mehra",
+      "managerId": null,
+      "managerName": null,
       "status": "Active",
       "riskLevel": "Low",
       "userType": "MANAGER",
@@ -147,7 +152,8 @@
       "validFrom": "2015-02-01",
       "validTo": "9999-12-31",
       "employeeId": "100106",
-      "plant": "Manesar Plant"
+      "plant": "Manesar Plant",
+      "designation": "DPM"
     },
     {
       "userId": "U007",
@@ -156,8 +162,8 @@
       "lastName": "Mehra",
       "fullName": "Kavita Mehra",
       "email": "kavita.mehra@acme.com",
-      "department": "GRC",
-      "jobTitle": "GRC Administrator",
+      "department": "DE-DCG",
+      "jobTitle": "DE-DCG Divisional Manager",
       "companyCode": "1000",
       "managerId": null,
       "managerName": null,
@@ -171,7 +177,8 @@
       "validFrom": "2012-11-11",
       "validTo": "9999-12-31",
       "employeeId": "100107",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "DVM"
     },
     {
       "userId": "U008",
@@ -180,7 +187,7 @@
       "lastName": "Singh",
       "fullName": "Tara Singh",
       "email": "tara.singh@acme.com",
-      "department": "Risk & Compliance",
+      "department": "DE-DCG",
       "jobTitle": "Risk Officer",
       "companyCode": "1000",
       "managerId": "U007",
@@ -195,7 +202,8 @@
       "validFrom": "2017-04-03",
       "validTo": "9999-12-31",
       "employeeId": "100108",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "MGR"
     },
     {
       "userId": "U009",
@@ -219,7 +227,8 @@
       "validFrom": "2023-01-16",
       "validTo": "9999-12-31",
       "employeeId": "100109",
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": "Probation"
     },
     {
       "userId": "U010",
@@ -244,7 +253,8 @@
       "validFrom": "2020-01-01",
       "validTo": "9999-12-31",
       "employeeId": null,
-      "plant": "Gurugram Plant"
+      "plant": "Gurugram Plant",
+      "designation": null
     }
   ]
 }
